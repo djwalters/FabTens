@@ -6,7 +6,7 @@ function [PixSize,VolFrac,EigVals,EigVecs,MeanStrucThick,StrucThickHist,StrucThi
 % variables for visualizing the Mean Intercept Length tensor as it relates
 % to material texture (not to be confused with bonding texture).
 
-LocalPath = 'C:\Doctoral Researach\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Linux FTP Mirror\PhD Work\MicroMechanics\Matlab 3D Segmentation Results\';
+LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
 [CTAnStereoFile,CTAnStereoPath] = uigetfile(...
     [LocalPath,'.txt'],'Select CTAn Stereology Data');
 CTAnFullPath = [CTAnStereoPath,CTAnStereoFile];
