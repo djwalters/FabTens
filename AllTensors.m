@@ -1,4 +1,4 @@
-function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2] = AllTensors(F2)
+function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2,CMILRatio] = AllTensors(F2)
 % TensorRoot.m
 % This function is utilized for post processing computed fabric tensors.
 % This reads the inputs from the calculated CONTACT FABRIC TENSOR and the
@@ -52,10 +52,12 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2] = AllTensors(F2)
 % Fabric Tensor, and an isotropic sphere, all volumes are normalize to one.
 VCON = (4/3)*pi*F2(1,1)*F2(2,2)*F2(3,3);
 %Generates an ellipsoid with the radii scaled such that the volume equals 1
-[C1,C2,C3]=ellipsoid(0,0,0,...
-    F2(1,1)/(VCON^(1/3)),...
-    F2(2,2)/(VCON^(1/3)),...
-    F2(3,3)/(VCON^(1/3)),30);
+CRad1 = F2(1,1)/(VCON^(1/3));
+CRad2 = F2(2,2)/(VCON^(1/3));
+CRad3 = F2(3,3)/(VCON^(1/3));
+
+
+[C1,C2,C3]=ellipsoid(0,0,0,CRad1,CRad2,CRad3,30);
 
 %% Operate on the MIL Fabric Tensor
 % Orient the MIL Fabric Tensor Ellipsoid with the Principal Axes
@@ -67,10 +69,11 @@ VCON = (4/3)*pi*F2(1,1)*F2(2,2)*F2(3,3);
 % EigenVector associated with each EigenValue M1,M2,and M3
 VMIL = (4/3)*pi*D(1)*D(2)*D(3);
 %Generates an ellipsoid with the radii scaled such that the volume equals 1
-[M1,M2,M3]=ellipsoid(0,0,0,...
-    D(1)/(VMIL^(1/3)),...
-    D(2)/(VMIL^(1/3)),...
-    D(3)/(VMIL^(1/3)),30);
+MILRad1 = D(1)/(VMIL^(1/3));
+MILRad2 = D(2)/(VMIL^(1/3));
+MILRad3 = D(3)/(VMIL^(1/3));
+
+[M1,M2,M3]=ellipsoid(0,0,0,MILRad1,MILRad2,MILRad3,30);
 sz=size(M1);
 for x=1:sz(1)
     for y=1:sz(2)
@@ -79,6 +82,12 @@ for x=1:sz(1)
         M1(x,y)=A(1);M2(x,y)=A(2);M3(x,y)=A(3);
     end
 end
+
+%% Calculate Aspect ratio of between the MIL and Contact Ellipsoids
+CMILRatio = zeros(3,3);
+CMILRatio(1,1) = CRad1/MILRad1;
+CMILRatio(2,2) = CRad2/MILRad2;
+CMILRatio(3,3) = CRad3/MILRad3;
 
 %% Compute volume of MIL Ellipsoid for equivalent isotropic sphere
 rs = (3/4 / pi)^(1/3);
