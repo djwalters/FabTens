@@ -1,12 +1,12 @@
-function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2,CMILRatio] = AllTensors(F2)
+function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2,CMILRatio] = AllTensors(FileIn)
 % TensorRoot.m
 % This function is utilized for post processing computed fabric tensors.
 % This reads the inputs from the calculated CONTACT FABRIC TENSOR and the
 % MIL FABRIC TENSOR from CTAn.
 %
 % INPUTS:
-%           F2: The second order contact tensor as calculated by the
-%           function ContactTensor.m
+%       FileIn: specifies whether a single file is used or multiple files
+%       chronologically ordered. 1 for single file, 2 for multiple files
 %
 % OUTPUTS:
 %           PixSize: Outputs the pixel/voxel resolution of the CT Scan for
@@ -40,7 +40,7 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2,CMILRatio] = AllTen
 [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickHist,StrucThickSD]...
     = CTAnData;
 %% Import data from Contact Tensor Segmentation Analysis
-%[F2,~] = ContactTensor(1,PixSize); % NOTE: Second output of function is 4th order tensor if desired
+[F2,~] = ContactTensor(FileIn,PixSize); % NOTE: Second output of function is 4th order tensor if desired
 
 %% Operate on Contact Fabric Tensor
 % Generate an ellipsoid using the contact tensor to create a 3-D
