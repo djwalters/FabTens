@@ -1,4 +1,6 @@
-function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2,CMILRatio] = AllTensors(FileIn)
+function [PixSize,VolFrac,D,E,MeanStrucThick,F2,F2Ci,...
+    F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
+    coordNum,shapeFac,idx,endtime,spatialLabel,CMILRatio] = AllTensors(FileIn)
 % TensorRoot.m
 % This function is utilized for post processing computed fabric tensors.
 % This reads the inputs from the calculated CONTACT FABRIC TENSOR and the
@@ -37,11 +39,12 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,StrucThickSD,F2,CMILRatio] = AllTen
 
 
 %% Import data from CTAnData (external function)
-[PixSize,VolFrac,D,E,MeanStrucThick,StrucThickHist,StrucThickSD]...
-    = CTAnData;
+[PixSize,VolFrac,D,E,MeanStrucThick,StrucThickHist,]...
+    = CTAnData(FileIn);
 %% Import data from Contact Tensor Segmentation Analysis
-[F2,~] = ContactTensor(FileIn,PixSize); % NOTE: Second output of function is 4th order tensor if desired
-
+[F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
+    coordNum,shapeFac,idx,endtime,spatialLabel]...
+    = ContactTensor(FileIn,1,PixSize);
 %% Operate on Contact Fabric Tensor
 % Generate an ellipsoid using the contact tensor to create a 3-D
 % visualization of of the distribution of bonds in the analyzed sample.

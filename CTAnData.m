@@ -1,5 +1,5 @@
 function [idx,PixSize,VolFrac,EigVals,EigVecs,...
-    MeanStrucThick,StrucThickHist,StrucThickSD] = CTAnData(FileIn)
+    MeanStrucThick,StrucThickHist] = CTAnData(FileIn)
 
 % function [PixSize,VolFrac,EigVals,EigVecs,MeanStrucThick,StrucThickHist,StrucThickSD]...
 %     = CTAnData(FileIn)
@@ -10,7 +10,9 @@ function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 % to material texture (not to be confused with bonding texture).
 
 [idx,PixSize,VolFrac,EigVals,EigVecs,...
-    MeanStrucThick,StrucThickHist,StrucThickSD] = FileImport(FileIn);
+    MeanStrucThick,StrucThickHist] = FileImport(FileIn);
+
+PixSize = PixSize{1};
 
 % LocalPath = CTAnStereoPath;
 % [CTAnStrucThickFile,CTAnStrucThickPath] = uigetfile(...
@@ -21,7 +23,7 @@ function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 end
 
 function [idx,PixSize,VolFrac,EigVals,EigVecs,...
-    MeanStrucThick,StrucThickHist,StrucThickSD] = FileImport(FileIn)
+    MeanStrucThick,StrucThickHist] = FileImport(FileIn)
 % FileImport is a function which imports output from CTAn which contains
 % MIL Fabric tensor values, microstructural quantities, and structure
 % thickness information
@@ -64,7 +66,7 @@ switch FileIn
         [CTAnStrucThickFile,CTAnStrucThickPath] = uigetfile(...
         [LocalPath,'.txt'],'Select CTAn Structure Thickness Data');
         StrucThickFullPath = [CTAnStrucThickPath,CTAnStrucThickFile];
-        [MeanStrucThick,StrucThickHist,StrucThickSD] = ...
+        [MeanStrucThick,StrucThickHist] = ...
             importStrucThick(StrucThickFullPath,12);
         idx = 0;
         endtime = idx+1;
@@ -79,7 +81,6 @@ switch FileIn
         
         % Loop through to get path for each data set and record the time
         for i = 1:length(TimeFolds)
-            i
             FilePath = fullfile(RootPath,TimeFolds{i});
             Files = dir(fullfile(FilePath,'*.txt'));
             if size(Files,1) > 2
@@ -91,7 +92,7 @@ switch FileIn
             EigVecs{i} = EigVecs{i}';
             VolFrac{i} = VolFrac{i}/100;
             
-            [MeanStrucThick{i},StrucThickHist{i},StrucThickSD{i}] = ...
+            [MeanStrucThick{i},StrucThickHist{i}] = ...
             importStrucThick(CTAnFullPath2,12);
 %             fid = fopen(FullPath1, 'r');  %Open read only
 %             % Set headers and number of columns of data (24 columns currently)
@@ -232,7 +233,7 @@ EigVecs = [dataArray{1:end-1}];
 fclose(fileID);
 end
 
-function [MeanStrucThick,StrucThickHist,StrucThickSD] = ...
+function [MeanStrucThick,StrucThickHist] = ...
     importStrucThick(filename,intervals)
 %% Open the text file.
 fileID = fopen(filename,'r');
@@ -317,7 +318,6 @@ StrucThickHist = [dataArray{1:end-1}];
 % 
 % % Create output variable
 % StrucThickSD = [dataArray{1:end-1}];
-StrucThickSD = 0;
 %% Close the text file.
 fclose(fileID);
 end
