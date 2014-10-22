@@ -11,8 +11,9 @@ function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 
 [idx,PixSize,VolFrac,EigVals,EigVecs,...
     MeanStrucThick,StrucThickHist] = FileImport(FileIn);
-
+if length(idx)>1
 PixSize = PixSize{1};
+end
 
 % LocalPath = CTAnStereoPath;
 % [CTAnStrucThickFile,CTAnStrucThickPath] = uigetfile(...
@@ -139,8 +140,8 @@ for block=2:length(startRow)
     dataArray{1} = [dataArray{1};dataArrayBlock{1}];
 end
 % Create output variable
-PixSize = [dataArray{1:end-1}];
-clear dataArray
+PixSize = dataArray{:, 1};
+% clear dataArray
 %% Import VolFrac
 
 % Initialize variables for VolFrac.
