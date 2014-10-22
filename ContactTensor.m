@@ -154,14 +154,19 @@ for n = 1:length(idx)
         % intervals
         F2TotSamp(:,:,p) = F2Samp;
         F4TotSamp(:,:,:,:,p) = F4Samp;
-        
+
     end
     
     %Calculate the 95% confidence interval of the resampled tensor
     %coefficients.
     F2Ci(:,:,n,:) = prctile(F2TotSamp,[5 95],3);
     F4Ci(:,:,:,:,n,:) = prctile(F4TotSamp,[5 95],5);
-    
+    clear F2Samp
+    clear F4Samp
+    clear BPSamp
+    clear SampRows
+    clear F2TotSamp 
+    clear F4TotSamp
     % Calculate the 2nd order and 4th order contact tensors for the
     % entire sample of bonds.
     F2(:,:,n) = zeros(3,3);
@@ -408,7 +413,7 @@ switch FileIn
     case 2
         % Restrict local path for selecting data folder, and select file
         % from GUI selection
-        LocalPath = 'C:\Doctoral Researach\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Linux FTP Mirror\PhD Work\MicroMechanics\Matlab 3D Segmentation Results\';
+        LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
         RootPath = uigetdir(LocalPath,...
             'Select root directory of segmentation results');
         % Get times from folders of specific tests
