@@ -1,33 +1,13 @@
 function [idx,PixSize,VolFrac,EigVals,EigVecs,...
-    MeanStrucThick,StrucThickHist] = CTAnData(FileIn)
-
-% function [PixSize,VolFrac,EigVals,EigVecs,MeanStrucThick,StrucThickHist,StrucThickSD]...
-%     = CTAnData(FileIn)
-%[VF,EVal,EVec,Thick] = CTAnData(argin)
+    MeanStrucThick,StrucThickHist,RootPath] = CTAnData(FileIn)
+% CTAnData.m
+% function [idx,PixSize,VolFrac,EigVals,EigVecs,...
+%     MeanStrucThick,StrucThickHist,RootPath] = CTAnData(FileIn)
+%
 % This function reads in the data output from CTAn for a 3D volume analysis
 % with adavanced anisotropy data turned on.  This produces the necessary
 % variables for visualizing the Mean Intercept Length tensor as it relates
 % to material texture (not to be confused with bonding texture).
-
-[idx,PixSize,VolFrac,EigVals,EigVecs,...
-    MeanStrucThick,StrucThickHist] = FileImport(FileIn);
-if length(idx)>1
-PixSize = PixSize{1};
-end
-
-% LocalPath = CTAnStereoPath;
-% [CTAnStrucThickFile,CTAnStrucThickPath] = uigetfile(...
-%     [LocalPath,'.txt'],'Select CTAn Structure Thickness Data');
-% StrucThickFullPath = [CTAnStrucThickPath,CTAnStrucThickFile];
-% [MeanStrucThick,StrucThickHist,StrucThickSD] = ...
-%     importStrucThick(StrucThickFullPath,12);
-end
-
-function [idx,PixSize,VolFrac,EigVals,EigVecs,...
-    MeanStrucThick,StrucThickHist] = FileImport(FileIn)
-% FileImport is a function which imports output from CTAn which contains
-% MIL Fabric tensor values, microstructural quantities, and structure
-% thickness information
 %
 % INPUTS:
 %   FileIn: Enter either 1 or 2 to specify whether to read in a single file
@@ -37,21 +17,49 @@ function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 %   the scan which contain the appropriate .txt files. E.g.:
 %       >Time Lapse:
 %           >0830
-%               >0830Analysis.txt
+%               >0830Analysis_3D.txt
+%               >0830Analysis_strucThick.txt
 %           >1130
-%               >1130Analysis.txt
+%               >1130Analysis_3D.txt
+%               >1130Analysis_strucThick.txt
 %           >1430
-%               >1430Analysis.txt
+%               >1430Analysis_3D.txt
+%               >1430Analysis_strucThick.txt
 %        etc.
 %
+%
 % OUTPUTS:
-%   hdr: Contains the header names of the imported data
-%   bonds: Output array of the entire imported dataset
-%   idx: Elapsed time of each scan.  This utilizes the name of the folder
-%   to calculate time.
-%   endtime: A variable that sets the maximum limit of time to be used on
-%   any associated plots.
+%       idx: Elapsed time identifier used to label plots and seperate data
+%       based on time during experiment.  Derived from the folder stucture.
+%       See help for subfunction FileImport in this file for the
+%       appropriate folder structure to use with this function.
+%
+%       PixSize: Outputs the pixel/voxel resolution of the CT Scan for
+%       proper dimensional scaling.
+%       
+%       VolFrac: Ice volume fraction computed for the volume of interest.
+%
+%       EigVals: Eigen Values of the MIL Fabric Tensor reported from CTAn.
+%
+%       EigVecs: Eigen Vectors of the MIL Fabric Tensor reported from CTAn.
+%
+%       MeanStrucThick: The mean value of the structure thickness as
+%       computed from CTAn.  This is produced by inscribing a sphere along
+%       all voxels of the 3-D structures' skeleton.  The structure
+%       thickness is the radius of that sphere.  In addition, a histogram
+%       of the distribution of the computed structure thicknesses is
+%       plotted.
+%
+%       StruckThickHist: Histogram data of structure thickness as computed 
+%       from CTAn.
+%
+%       RootPath: String variable containing the directory for starting
+%       file selection in the correct folder.
+%
+% Version: 1.0 - October 23, 2014
+% AUTHOR: David J. Walters; Montana State University
 
+%% Import Files
 switch FileIn
     case 1
         LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
@@ -71,6 +79,7 @@ switch FileIn
             importStrucThick(StrucThickFullPath,12);
         idx = 0;
         endtime = idx+1;
+        RootPath = LocalPath;
     case 2
         % Restrict local path for selecting data folder, and select file
         % from GUI selection
@@ -89,26 +98,24 @@ switch FileIn
             end
             CTAnFullPath1 = fullfile(FilePath,Files(1).name);
             CTAnFullPath2 = fullfile(FilePath,Files(2).name);
-            [PixSize{i},VolFrac{i},EigVals{i},EigVecs{i}] = importCTAnData(CTAnFullPath1);
-            EigVecs{i} = EigVecs{i}';
-            VolFrac{i} = VolFrac{i}/100;
+            [PixSize(i),VolFrac(i),EigVals(:,i),EigVecs{i}] = importCTAnData(CTAnFullPath1);
+            EigVecs(:,:,i) = EigVecs{i}';
+            VolFrac(i) = VolFrac(i)/100;
             
-            [MeanStrucThick{i},StrucThickHist{i}] = ...
+            [MeanStrucThick(i),StrucThickHist(:,:,i)] = ...
             importStrucThick(CTAnFullPath2,12);
-%             fid = fopen(FullPath1, 'r');  %Open read only
-%             % Set headers and number of columns of data (24 columns currently)
-%             hdr{i} = textscan(fid, '%s',24,'delimiter',',');
-%             % Scan the numerical data (11 columns currently)
-%             bonds{i} = textscan(fid...
-%                 ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
-%                 ,'delimiter',',','HeaderLines',1);
-%             fclose(fid);
+        
             t1{i} = datevec(TimeFolds{i},'HHMM');
             idx(i) = etime(t1{i},t1{1})/60^2;
         end
         endtime = idx(i)+1;
         days = 1;
 end
+
+if length(idx)>1
+    PixSize = PixSize{1};
+end
+
 end
 
 function [PixSize,VolFrac,EigVals,EigVecs] = importCTAnData(filename)
@@ -294,31 +301,6 @@ end
 % Create output variable
 StrucThickHist = [dataArray{1:end-1}];
 
-% %% Import Structure Thickness Standard Deviation
-% % Initialize variables.
-% startRow = 1;
-% endRow = 1;
-% 
-% % Format string for each line of text:
-% %   column3: double (%f)
-% % For more information, see the TEXTSCAN documentation.
-% formatSpec = '%*s%*s%f%*s%[^\n\r]';
-% 
-% % Read columns of data according to format string.
-% % This call is based on the structure of the file used to generate this
-% % code. If an error occurs for a different file, try regenerating the code
-% % from the Import Tool.
-% textscan(fileID, '%[^\n\r]', startRow(1)-1, 'ReturnOnError', false);
-% dataArray = textscan(fileID, formatSpec, endRow(1)-startRow(1)+1, 'Delimiter', delimiter, 'ReturnOnError', false);
-% for block=2:length(startRow)
-%     frewind(fileID);
-%     textscan(fileID, '%[^\n\r]', startRow(block)-1, 'ReturnOnError', false);
-%     dataArrayBlock = textscan(fileID, formatSpec, endRow(block)-startRow(block)+1, 'Delimiter', delimiter, 'ReturnOnError', false);
-%     dataArray{1} = [dataArray{1};dataArrayBlock{1}];
-% end
-% 
-% % Create output variable
-% StrucThickSD = [dataArray{1:end-1}];
 %% Close the text file.
 fclose(fileID);
 end

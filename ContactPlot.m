@@ -11,12 +11,53 @@ function ContactPlot(F2,F2Ci,bondRad,grainRad,...
 % This function requires the use of errorbarwidth.m for appropriately
 % sizing the error bars on the plots produced by this function.
 %
-% Note that input idx is the elapsed time identifier calculated within
-% ContactTensor.m from the folder structure of the analyzed data.
+% INPUTS
+%       F2(i,j,n): 2nd order contact tensor.  i and j reference the matrix
+%       position within an individual tensor (i=1,2,3;j=1,2,3) and n
+%       specifies the volume in chronological order with which the contact
+%       tensor is associated.
+%       
+%       F2Ci(i,j,n,b): Upper and lower bonds of the 95% confidence interval of
+%       2nd order contact tensor.  i, j, and n are the same as above.  b 
+%       indicates the upper or lower bounds of the confidence interval. 1
+%       indicates the lower bound, 2 indicates the upper bound.
 %
+%       bondRad{n}: A vector of the distribution of bond radii contained
+%       within a cell structure for time series data.
+%
+%       grainRad{n}: Same as bondRad except the distribution of grain
+%       radii.
+%
+%       meanBondRad: Mean 3-D bond radius.  This assumes a circular contact
+%       since it is based off the calculated bond area.
+%
+%       meanGrainRad: Mean 3-D grain radius based on the largest inscribed
+%       sphere of each individual grain identified in 3-D segmentation
+%
+%       coordNum: Mean 3-D coordination number.  This number represents the
+%       average number of contacts per grain.
+%
+%       shapeFac: A calculation of the scalar shape factor.  This is the
+%       ratio of the spherical grain gradius (meanGrainRad) to the distance
+%       of the grain center to bond center.
+%
+%       idx: Elapsed time identifier used to label plots and seperate data
+%       based on time during experiment.  Derived from the folder stucture.
+%       See help for subfunction FileImport in this file for the
+%       appropriate folder structure to use with this function.
+%
+%       pixdim: Outputs the pixel/voxel resolution of the CT Scan for
+%       proper dimensional scaling.
+%
+%       endtime: Variable listing the final elapsed time used in plotting
+%       functions
+%
+%       spatialLabel: String variable set here to use in plotting functions
+%       in other scripts and functions.
 %
 % Author: David J. Walters, Montana State University
 % Version 1.0 - October 22, 2014
+%   -Updated help file Oct. 23, 2014
 
 %% Plot tensor coefficients
 % Initialize plot parameters

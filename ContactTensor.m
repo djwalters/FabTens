@@ -14,9 +14,14 @@ function [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
 %
 %       Plot: Indicate 1 to include plots, 0 to exclude plots
 %
-%       varargin: Optional input to specify the spatial pixel dimension in
+%       varargin{1}: Optional input to specify the spatial pixel dimension in
 %       micrometers (um).  If left blank, all spatial dimensions will be
 %       based on per pixel rather than per micrometer.
+%
+%       varargin{2}: Optional input of the rootpath directory for starting
+%       file selection in the correct folder.  This is used when function
+%       is called in a higher level function where file selection is
+%       already taking place.
 %
 %   OUTPUS: 
 %       F2(i,j,n): 2nd order contact tensor.  i and j reference the matrix
@@ -39,6 +44,12 @@ function [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
 %       above.  b indicates the upper or lower bounds of the confidence 
 %       interval. 1 indicates the lower bound, 2 indicates the upper bound.
 %
+%       bondRad{n}: A vector of the distribution of bond radii contained
+%       within a cell structure for time series data.
+%
+%       grainRad{n}: Same as bondRad except the distribution of grain
+%       radii.
+%
 %       meanBondRad: Mean 3-D bond radius.  This assumes a circular contact
 %       since it is based off the calculated bond area.
 %
@@ -47,6 +58,21 @@ function [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
 %
 %       coordNum: Mean 3-D coordination number.  This number represents the
 %       average number of contacts per grain.
+%
+%       shapeFac: A calculation of the scalar shape factor.  This is the
+%       ratio of the spherical grain gradius (meanGrainRad) to the distance
+%       of the grain center to bond center.
+%
+%       idx: Elapsed time identifier used to label plots and seperate data
+%       based on time during experiment.  Derived from the folder stucture.
+%       See help for subfunction FileImport in this file for the
+%       appropriate folder structure to use with this function.
+%
+%       endtime: Variable listing the final elapsed time used in plotting
+%       functions
+%
+%       spatialLabel: String variable set here to use in plotting functions
+%       in other scripts and functions.
 %
 %   EXTERNAL FUNCTION CALLS:
 %       MnDev.m
@@ -78,15 +104,21 @@ if isempty(varargin)
     pixdim = 1;
     spatialLabel = '( pix )';
     fprintf('All spatial dimensions are in pixels since no pixel dimension was provided.\n')
+    RootPath = 0;
 elseif length(varargin) == 1
     pixdim = varargin{1};
     spatialLabel = '( \mum )';
+    RootPath = 0;
+elseif length(varargin) == 2
+    pixdim = varargin{1};
+    spatialLabel = '( \mum )';
+    RootPath = varargin{2};
 else
     error('Too many input arguments')
 end
 %% Initialize file input cases for either single analysis or a series of analyses
 nboot = 1000;
-[hdr,bonds,idx,endtime] = FileImport(FileIn);   %Subfunction for importing files
+[hdr,bonds,idx,endtime] = FileImport(FileIn,RootPath);   %Subfunction for importing files
 
 % Create a waitbar to show progress of computation including a cancel
 % button
@@ -366,7 +398,7 @@ end
 % set(gca,'XTick',0:3:endtime)
 end
 
-function [hdr,bonds,idx,endtime] = FileImport(FileIn)
+function [hdr,bonds,idx,endtime] = FileImport(FileIn,RootPath)
 % FileImport is a function which imports 3-D segmentation data as produced
 % by the Matlab function Segmentation3D run in a Linux environment.  This
 % produces a .csv file containing bond and grain size, position, and
@@ -394,52 +426,100 @@ function [hdr,bonds,idx,endtime] = FileImport(FileIn)
 %   to calculate time.
 %   endtime: A variable that sets the maximum limit of time to be used on
 %   any associated plots.
-
-switch FileIn
-    case 1
-        LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
-        [FileName,FilePath] = uigetfile([LocalPath,'.csv'],'Select Segmentation Data');
-        FullPath = [FilePath,FileName];
-        % Read files of segmentation data
-        fid = fopen(FullPath, 'r');  %Open read only
-        % Set headers and number of columns of data (24 columns currently)
-        hdr{1} = textscan(fid, '%s',24,'delimiter',',');
-        % Scan the numerical data (11 columns currently)
-        bonds{1} = textscan(fid, '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
-            ,'delimiter',',','HeaderLines',1);
-        fclose(fid);
-        idx = 0;
-        endtime = idx+1;
-    case 2
-        % Restrict local path for selecting data folder, and select file
-        % from GUI selection
-        LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
-        RootPath = uigetdir(LocalPath,...
-            'Select root directory of segmentation results');
-        % Get times from folders of specific tests
-        TimeFolds = GetFolds(RootPath)
-        
-        % Loop through to get path for each data set and record the time
-        for i = 1:length(TimeFolds)
-            FilePath = fullfile(RootPath,TimeFolds{i});
-            Files = dir(fullfile(FilePath,'*.csv'));
-            if size(Files,1) > 1
-                error('Cannot have more than one .csv file in results time folder.  Please reduce the number of .csv files to 1 in each time folder containing results')
-            end
-            FullPath = fullfile(FilePath,Files.name);
+if RootPath == 0
+    switch FileIn
+        case 1
+            LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+            [FileName,FilePath] = uigetfile([LocalPath,'.csv'],'Select Segmentation Data');
+            FullPath = [FilePath,FileName];
+            % Read files of segmentation data
             fid = fopen(FullPath, 'r');  %Open read only
             % Set headers and number of columns of data (24 columns currently)
-            hdr{i} = textscan(fid, '%s',24,'delimiter',',');
+            hdr{1} = textscan(fid, '%s',24,'delimiter',',');
             % Scan the numerical data (11 columns currently)
-            bonds{i} = textscan(fid...
-                ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+            bonds{1} = textscan(fid, '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
                 ,'delimiter',',','HeaderLines',1);
             fclose(fid);
-            t1{i} = datevec(TimeFolds{i},'HHMM');
-            idx(i) = etime(t1{i},t1{1})/60^2;
-        end
-        endtime = idx(i)+1;
-        days = 1;
+            idx = 0;
+            endtime = idx+1;
+        case 2
+            % Restrict local path for selecting data folder, and select file
+            % from GUI selection
+            LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+            RootPath = uigetdir(LocalPath,...
+                'Select root directory of segmentation results');
+            % Get times from folders of specific tests
+            TimeFolds = GetFolds(RootPath)
+            
+            % Loop through to get path for each data set and record the time
+            for i = 1:length(TimeFolds)
+                FilePath = fullfile(RootPath,TimeFolds{i});
+                Files = dir(fullfile(FilePath,'*.csv'));
+                if size(Files,1) > 1
+                    error('Cannot have more than one .csv file in results time folder.  Please reduce the number of .csv files to 1 in each time folder containing results')
+                end
+                FullPath = fullfile(FilePath,Files.name);
+                fid = fopen(FullPath, 'r');  %Open read only
+                % Set headers and number of columns of data (24 columns currently)
+                hdr{i} = textscan(fid, '%s',24,'delimiter',',');
+                % Scan the numerical data (11 columns currently)
+                bonds{i} = textscan(fid...
+                    ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+                    ,'delimiter',',','HeaderLines',1);
+                fclose(fid);
+                t1{i} = datevec(TimeFolds{i},'HHMM');
+                idx(i) = etime(t1{i},t1{1})/60^2;
+            end
+            endtime = idx(i)+1;
+            days = 1;
+    end
+else
+    switch FileIn
+        case 1
+%             LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+            [FileName,FilePath] = uigetfile([RootPath,'.csv'],'Select Segmentation Data');
+            FullPath = [FilePath,FileName];
+            % Read files of segmentation data
+            fid = fopen(FullPath, 'r');  %Open read only
+            % Set headers and number of columns of data (24 columns currently)
+            hdr{1} = textscan(fid, '%s',24,'delimiter',',');
+            % Scan the numerical data (11 columns currently)
+            bonds{1} = textscan(fid, '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+                ,'delimiter',',','HeaderLines',1);
+            fclose(fid);
+            idx = 0;
+            endtime = idx+1;
+        case 2
+            % Restrict local path for selecting data folder, and select file
+            % from GUI selection
+%             LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+%             RootPath = uigetdir(LocalPath,...
+%                 'Select root directory of segmentation results');
+            % Get times from folders of specific tests
+            TimeFolds = GetFolds(RootPath)
+            
+            % Loop through to get path for each data set and record the time
+            for i = 1:length(TimeFolds)
+                FilePath = fullfile(RootPath,TimeFolds{i});
+                Files = dir(fullfile(FilePath,'*.csv'));
+                if size(Files,1) > 1
+                    error('Cannot have more than one .csv file in results time folder.  Please reduce the number of .csv files to 1 in each time folder containing results')
+                end
+                FullPath = fullfile(FilePath,Files.name);
+                fid = fopen(FullPath, 'r');  %Open read only
+                % Set headers and number of columns of data (24 columns currently)
+                hdr{i} = textscan(fid, '%s',24,'delimiter',',');
+                % Scan the numerical data (11 columns currently)
+                bonds{i} = textscan(fid...
+                    ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+                    ,'delimiter',',','HeaderLines',1);
+                fclose(fid);
+                t1{i} = datevec(TimeFolds{i},'HHMM');
+                idx(i) = etime(t1{i},t1{1})/60^2;
+            end
+            endtime = idx(i)+1;
+            days = 1;
+    end
 end
 end
 

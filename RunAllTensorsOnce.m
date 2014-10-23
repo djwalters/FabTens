@@ -1,0 +1,6 @@
+% Wrapper script for calling the function AllTensors.m for the one time
+% step out of a series of timestamped radiation recrystallization
+% experimental data
+[PixSize,VolFrac,D,E,MeanStrucThick,idx,CMILRatio,F2,F2Ci,...
+    F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,coordNum,shapeFac]...
+    = AllTensors(1);
