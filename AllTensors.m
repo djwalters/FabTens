@@ -142,7 +142,7 @@ for n = 1:length(idx)
 end
 %% Plots
 MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
-    StrucThickHist,MeanStrucThick,PixSize,spatialLabel)
+    StrucThickHist,MeanStrucThick,PixSize,spatialLabel,VolFrac,endtime)
 
 % %Plot Ellipsoids of Contact Fabric Tensor, MIL Fabric Tensor, and Isotropic
 % %Sphere

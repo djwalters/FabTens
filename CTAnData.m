@@ -75,7 +75,7 @@ switch FileIn
         [CTAnStrucThickFile,CTAnStrucThickPath] = uigetfile(...
         [LocalPath,'.txt'],'Select CTAn Structure Thickness Data');
         StrucThickFullPath = [CTAnStrucThickPath,CTAnStrucThickFile];
-        [MeanStrucThick,StrucThickHist] = ...
+        [MeanStrucThick,StrucThickHist{1}] = ...
             importStrucThick(StrucThickFullPath,12);
         idx = 0;
         endtime = idx+1;
@@ -98,12 +98,12 @@ switch FileIn
             end
             CTAnFullPath1 = fullfile(FilePath,Files(1).name);
             CTAnFullPath2 = fullfile(FilePath,Files(2).name);
-            [PixSize(i),VolFrac(i),EigVals(:,i),EigVecs{i}] = importCTAnData(CTAnFullPath1);
-            EigVecs(:,:,i) = EigVecs{i}';
+            [PixSize(i),VolFrac(i),EigVals(:,i),EigVecs(:,:,i)] = importCTAnData(CTAnFullPath1)
+%             EigVecs(:,:,i) = (EigVecs{i})';
             VolFrac(i) = VolFrac(i)/100;
             
-            [MeanStrucThick(i),StrucThickHist(:,:,i)] = ...
-            importStrucThick(CTAnFullPath2,12);
+            [MeanStrucThick(i),StrucThickHist{i}] = ...
+            importStrucThick(CTAnFullPath2,12)
         
             t1{i} = datevec(TimeFolds{i},'HHMM');
             idx(i) = etime(t1{i},t1{1})/60^2;
@@ -113,7 +113,7 @@ switch FileIn
 end
 
 if length(idx)>1
-    PixSize = PixSize{1};
+    PixSize = PixSize(1);
 end
 
 end
@@ -236,6 +236,7 @@ end
 
 % Create output variable
 EigVecs = [dataArray{1:end-1}];
+EigVecs = EigVecs';
 
 %% Close the text file.
 fclose(fileID);

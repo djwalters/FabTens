@@ -1,5 +1,5 @@
 function MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
-    StrucThickHist,MeanStrucThick,PixSize,spatialLabel)
+    StrucThickHist,MeanStrucThick,PixSize,spatialLabel,VolFrac,endtime)
 % MILPlot.m
 % MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
 %     StrucThickHist,MeanStrucThick,PixSize,spatialLabel)
@@ -34,6 +34,8 @@ function MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
 %   spatialLabel: String variable set here to use in plotting functions
 %   in other scripts and functions.
 %
+%   VolFrac: Volume fraction vector produced by CTAn
+%
 % Version: 1.0 - October 23, 2014
 % AUTHOR: David J. Walters; Montana State University
 
@@ -41,10 +43,10 @@ function MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
 ebwidth = 0.1;  % Errorbar cap width
 font = 'Palatino Linotype';
 fsize = 11;     % Font Size
+msize = 5;      % Marker Size
 
-%% Plots
-%Plot Ellipsoids of Contact Fabric Tensor, MIL Fabric Tensor, and Isotropic
-%Sphere
+
+%% Plot Ellipsoids of Contact Fabric Tensor, MIL Fabric Tensor, and Isotropic Sphere
 for n = 1:length(idx)
 str = sprintf('3-D Tensor Comparisons: Time elapsed -- %2.1f hrs',idx(n));
 figure('Name',str,'NumberTitle','off')
@@ -63,12 +65,13 @@ set([z1 y1 x1],'FontName',font,'FontSize',fsize)
 set(gca,'FontName',font,'FontSize',fsize)
 end
 
+%% Plot Distribution of Structure Thickness (Equivalent sphere radii) from
+%CTAn to compare to Structure Thickness computed from sementation code.
 for n = 1:length(idx)
-% Plot Distribution of Structure Thickness (Equivalent sphere radii) from
-% CTAn to compare to Structure Thickness computed from sementation code.
+
 str = sprintf('Structure Thickness Distribution: Time elapsed -- %2.1f hrs',idx(n));
 figure('Name',str,'NumberTitle','off')
-bar(StrucThickHist(:,1,n)*PixSize,StrucThickHist(:,2,n),'hist');
+bar(StrucThickHist{n}(:,1)*PixSize,StrucThickHist{n}(:,2),'hist');
 
 x1 = xlabel(['Structure Thickness',spatialLabel]);
 y1 = ylabel('Percent (%)');
@@ -82,3 +85,17 @@ text(MeanStrucThick(n)*PixSize,YLimits(2)-(YLimits(2)*0.05)...
 set([y1 x1],'FontName',font,'FontSize',fsize)
 set(gca,'FontName',font,'FontSize',fsize)
 end
+
+%% Volume Fraction
+figure('Name','Volume Fraction','NumberTitle','off')
+
+% Plot volume fraction vs time
+plot(idx,VolFrac,'ko','MarkerSize',msize);
+grid
+axis([-1 (endtime) 0 0.3])
+y1 = ylabel('\phi: Ice Volume Fraction ');
+x1 = xlabel('Elapsed Time (hrs)');
+
+% Adjust final appearance of plots
+set([y1 x1],'FontName',font,'FontSize',fsize)
+set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
