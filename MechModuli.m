@@ -44,8 +44,10 @@ function [E_star, G_star, nu_star, Youngs, LYoungs, UYoungs,...
 %   intervals
 
 %% Initialize variables internal to function
-E_ice = 9330e6;     %Young's modulus ice (Petrenko and Whitworth 1999)
-G_ice = 3520e6;     %Shear modulus ice (Petrenko and Whitworth 1999)
+% E_ice = 9330e6;     %Young's modulus ice (Petrenko and Whitworth 1999)
+% G_ice = 3520e6;     %Shear modulus ice (Petrenko and Whitworth 1999)
+E_ice = 1000e6;
+G_ice = 377e6;
 xi = G_ice/E_ice;   %Stiffness ratio
 f = 1/3;            %Isotropic value of contact tensor
 
@@ -114,13 +116,13 @@ Youngs.z = E(3);
     UYoungs.z = UE(3);
 
 
-Shear.xy = S(6,6)^(-1);
+Shear.xy = S(6,6)^(-1)/2;
     LShear.xy = LS(6,6)^(-1);
     UShear.xy = US(6,6)^(-1);
-Shear.xz = S(5,5)^(-1);
+Shear.xz = S(5,5)^(-1)/2;
     LShear.xz = LS(5,5)^(-1);
     UShear.xz = US(5,5)^(-1);
-Shear.yz = S(4,4)^(-1);
+Shear.yz = S(4,4)^(-1)/2;
     LShear.yz = LS(4,4)^(-1);
     UShear.yz = US(4,4)^(-1);
 

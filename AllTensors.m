@@ -1,5 +1,5 @@
-function [PixSize,VolFrac,D,E,MeanStrucThick,idx,CMILRatio,F2,F2Ci,...
-    F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,coordNum,shapeFac]...
+function [PixSize,VolFrac,D,E,MeanStrucThick,idx,F2,F2Ci,...
+    F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,coordNum,shapeFac,Tr]...
     = AllTensors(FileIn)
     
 % AllTensors.m
@@ -70,10 +70,15 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,idx,CMILRatio,F2,F2Ci,...
 %       ratio of the spherical grain gradius (meanGrainRad) to the distance
 %       of the grain center to bond center.
 %
+%       Tr: Tensor ratio
+%
 % Version: 1.0 - May 29, 2014
 % Version: 2.0 - October 23, 2014
 %   - Added ability to view all time series data for both segmentation
 %   contact tensor data and MIL tensor data produced by CTAn.
+% Version: 2.1 - October 28, 2014
+%   - Added function for calculating the Tensor Ratio.  Inclusion of
+%   mechanical properties is the next task.
 % AUTHOR: David J. Walters; Montana State University
 
 
@@ -126,11 +131,8 @@ for n = 1:length(idx)
         end
     end
     
-    %% Calculate Aspect ratio of between the MIL and Contact Ellipsoids
-    CMILRatio{n} = zeros(3,3);
-    CMILRatio{n}(1,1) = CRad1(n)/MILRad1(n);
-    CMILRatio{n}(2,2) = CRad2(n)/MILRad2(n);
-    CMILRatio{n}(3,3) = CRad3(n)/MILRad3(n);
+    
+
     
     %% Compute volume of MIL Ellipsoid for equivalent isotropic sphere
     rs = (3/4 / pi)^(1/3);
@@ -139,36 +141,11 @@ for n = 1:length(idx)
     S1 = S1*rs;
     S2 = S2*rs;
     S3 = S3*rs;
+    %% Calculate Aspect ratio of between the MIL and Contact Ellipsoids
+    Tr(:,n) = TensorRatio(F2(:,:,n),D(:,n),E(:,:,n));
 end
 %% Plots
 MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
     StrucThickHist,MeanStrucThick,PixSize,spatialLabel,VolFrac,endtime)
-
-% %Plot Ellipsoids of Contact Fabric Tensor, MIL Fabric Tensor, and Isotropic
-% %Sphere
-% figure('Name','3-D Tensor Comparisons','NumberTitle','off')
-% surf(C1,C2,C3,'FaceColor',[0 1 0],'EdgeColor',[0 0.5 0]);   %Green
-% hold on
-% surf(M1,M2,M3,'FaceColor',[0 0 1],'EdgeColor',[0 0 0.5]);   %Blue
-% surf(S1,S2,S3,'FaceColor',[1 0 0],'EdgeColor',[0.5 0 0]);   %Red
-% alpha(0.75)
-% axis equal
-% xlabel('X')
-% ylabel('Y')
-% zlabel('Z')
-% legend('Contact Fabric Tensor','MIL Fabric Tensor','Isotropic Sphere'...
-%     ,'Location','best')
-% 
-% % Plot Distribution of Structure Thickness (Equivalent sphere radii) from
-% % CTAn to compare to Structure Thickness computed from sementation code.
-% figure('Name','Structure Thickness Distribution','NumberTitle','off')
-% bar(StrucThickHist(:,1),StrucThickHist(:,2),'hist');
-% xlabel('Pixels')
-% ylabel('Percent (%)')
-% YLimits = ylim;
-% hold on
-% line([MeanStrucThick MeanStrucThick], YLimits,'Color','r','LineWidth',2)
-% text(MeanStrucThick,YLimits(2)-(YLimits(2)*0.05)...
-%     ,'\leftarrow Mean Structure Thickness')
 
 end
