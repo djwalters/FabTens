@@ -143,6 +143,13 @@ for n = 1:length(idx)
     S3 = S3*rs;
     %% Calculate Aspect ratio of between the MIL and Contact Ellipsoids
     Tr(:,n) = TensorRatio(F2(:,:,n),D(:,n),E(:,:,n));
+    
+    %% Calculate Mechanical Properties
+    % Be sure to include outputs for the original contact tensor model, the
+    % outputs for the model modified just by the grain aspect ratio, and
+    % the outputs for the model modified by both the grain aspect ratio and
+    % tensor ratio.
+    
 end
 %% Plots
 MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
