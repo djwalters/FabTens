@@ -251,14 +251,14 @@ YoungsRaw.z = ERaw(3);
     UYoungsRaw.z = UERaw(3);
 
 ShearRaw.xy = SRaw(6,6)^(-1)/2;
-    LShearRaw.xy = LSRaw(6,6)^(-1);
-    UShearRaw.xy = USRaw(6,6)^(-1);
+    LShearRaw.xy = LSRaw(6,6)^(-1)/2;
+    UShearRaw.xy = USRaw(6,6)^(-1)/2;
 ShearRaw.xz = SRaw(5,5)^(-1)/2;
-    LShearRaw.xz = LSRaw(5,5)^(-1);
-    UShearRaw.xz = USRaw(5,5)^(-1);
+    LShearRaw.xz = LSRaw(5,5)^(-1)/2;
+    UShearRaw.xz = USRaw(5,5)^(-1)/2;
 ShearRaw.yz = SRaw(4,4)^(-1)/2;
-    LShearRaw.yz = LSRaw(4,4)^(-1);
-    UShearRaw.yz = USRaw(4,4)^(-1);
+    LShearRaw.yz = LSRaw(4,4)^(-1)/2;
+    UShearRaw.yz = USRaw(4,4)^(-1)/2;
 
 PoissonRaw.xy = nuRaw(1);
     LPoissonRaw.xy = LnuRaw(1);
