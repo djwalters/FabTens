@@ -282,14 +282,14 @@ YoungsAr.z = EAr(3);
     UYoungsAr.z = UEAr(3);
 
 ShearAr.xy = SAr(6,6)^(-1)/2;
-    LShearAr.xy = LSAr(6,6)^(-1);
-    UShearAr.xy = USAr(6,6)^(-1);
+    LShearAr.xy = LSAr(6,6)^(-1)/2;
+    UShearAr.xy = USAr(6,6)^(-1)/2;
 ShearAr.xz = SAr(5,5)^(-1)/2;
-    LShearAr.xz = LSAr(5,5)^(-1);
-    UShearAr.xz = USAr(5,5)^(-1);
+    LShearAr.xz = LSAr(5,5)^(-1)/2;
+    UShearAr.xz = USAr(5,5)^(-1)/2;
 ShearAr.yz = SAr(4,4)^(-1)/2;
-    LShearAr.yz = LSAr(4,4)^(-1);
-    UShearAr.yz = USAr(4,4)^(-1);
+    LShearAr.yz = LSAr(4,4)^(-1)/2;
+    UShearAr.yz = USAr(4,4)^(-1)/2;
 
 PoissonAr.xy = nuAr(1);
     LPoissonAr.xy = LnuAr(1);
@@ -313,14 +313,14 @@ YoungsArTr.z = EArTr(3);
     UYoungsArTr.z = UEArTr(3);
 
 ShearArTr.xy = SArTr(6,6)^(-1)/2;
-    LShearArTr.xy = LSArTr(6,6)^(-1);
-    UShearArTr.xy = USArTr(6,6)^(-1);
+    LShearArTr.xy = LSArTr(6,6)^(-1)/2;
+    UShearArTr.xy = USArTr(6,6)^(-1)/2;
 ShearArTr.xz = SArTr(5,5)^(-1)/2;
-    LShearArTr.xz = LSArTr(5,5)^(-1);
-    UShearArTr.xz = USArTr(5,5)^(-1);
+    LShearArTr.xz = LSArTr(5,5)^(-1)/2;
+    UShearArTr.xz = USArTr(5,5)^(-1)/2;
 ShearArTr.yz = SArTr(4,4)^(-1)/2;
-    LShearArTr.yz = LSArTr(4,4)^(-1);
-    UShearArTr.yz = USArTr(4,4)^(-1);
+    LShearArTr.yz = LSArTr(4,4)^(-1)/2;
+    UShearArTr.yz = USArTr(4,4)^(-1)/2;
 
 PoissonArTr.xy = nuArTr(1);
     LPoissonArTr.xy = LnuArTr(1);
