@@ -8,7 +8,7 @@ function MechModuliPlot( EStarRaw, GStarRaw, nuStarRaw, EStarAr, GStarAr, nuStar
     PoissonRaw, LPoissonRaw, UPoissonRaw,...
     PoissonAr, LPoissonAr, UPoissonAr,...
     PoissonArTr, LPoissonArTr, UPoissonArTr,...
-    SRaw, SAr, SArTr, endtime )
+    SRaw, SAr, SArTr, endtime, idx)
 % MechModuliPlot.m
 % function MechModuliPlot( EStarRaw, GStarRaw, nuStarRaw, EStarAr, GStarAr, nuStarAr,...
 %     YoungsRaw, LYoungsRaw, UYoungsRaw,...
@@ -68,7 +68,93 @@ function MechModuliPlot( EStarRaw, GStarRaw, nuStarRaw, EStarAr, GStarAr, nuStar
 %
 %   v1.0, October 30, 2014, 
 % AUTHOR: David J. Walters; Montana State University
+%% Convert Structures to Arrays
 
+for k = 1:length(idx)
+    YoungsXRaw(k) = YoungsRaw(k).x;
+    YoungsYRaw(k) = YoungsRaw(k).y;
+    YoungsZRaw(k) = YoungsRaw(k).z;
+    UYoungsXRaw(k) = UYoungsRaw(k).x;
+    UYoungsYRaw(k) = UYoungsRaw(k).y;
+    UYoungsZRaw(k) = UYoungsRaw(k).z;
+    LYoungsXRaw(k) = LYoungsRaw(k).x;
+    LYoungsYRaw(k) = LYoungsRaw(k).y;
+    LYoungsZRaw(k) = LYoungsRaw(k).z;
+    ShearXYRaw(k) = ShearRaw(k).xy;
+    ShearXZRaw(k) = ShearRaw(k).xz;
+    ShearYZRaw(k) = ShearRaw(k).yz;
+    UShearXYRaw(k) = UShearRaw(k).xy;
+    UShearXZRaw(k) = UShearRaw(k).xz;
+    UShearYZRaw(k) = UShearRaw(k).yz;
+    LShearXYRaw(k) = LShearRaw(k).xy;
+    LShearXZRaw(k) = LShearRaw(k).xz;
+    LShearYZRaw(k) = LShearRaw(k).yz;
+    PoissonXYRaw(k) = PoissonRaw(k).xy;
+    PoissonXZRaw(k) = PoissonRaw(k).xz;
+    PoissonYZRaw(k) = PoissonRaw(k).yz;
+    UPoissonXYRaw(k) = UPoissonRaw(k).xy;
+    UPoissonXZRaw(k) = UPoissonRaw(k).xz;
+    UPoissonYZRaw(k) = UPoissonRaw(k).yz;
+    LPoissonXYRaw(k) = LPoissonRaw(k).xy;
+    LPoissonXZRaw(k) = LPoissonRaw(k).xz;
+    LPoissonYZRaw(k) = LPoissonRaw(k).yz;
+
+    YoungsXAr(k) = YoungsAr(k).x;
+    YoungsYAr(k) = YoungsAr(k).y;
+    YoungsZAr(k) = YoungsAr(k).z;
+    UYoungsXAr(k) = UYoungsAr(k).x;
+    UYoungsYAr(k) = UYoungsAr(k).y;
+    UYoungsZAr(k) = UYoungsAr(k).z;
+    LYoungsXAr(k) = LYoungsAr(k).x;
+    LYoungsYAr(k) = LYoungsAr(k).y;
+    LYoungsZAr(k) = LYoungsAr(k).z;
+    ShearXYAr(k) = ShearAr(k).xy;
+    ShearXZAr(k) = ShearAr(k).xz;
+    ShearYZAr(k) = ShearAr(k).yz;
+    UShearXYAr(k) = UShearAr(k).xy;
+    UShearXZAr(k) = UShearAr(k).xz;
+    UShearYZAr(k) = UShearAr(k).yz;
+    LShearXYAr(k) = LShearAr(k).xy;
+    LShearXZAr(k) = LShearAr(k).xz;
+    LShearYZAr(k) = LShearAr(k).yz;
+    PoissonXYAr(k) = PoissonAr(k).xy;
+    PoissonXZAr(k) = PoissonAr(k).xz;
+    PoissonYZAr(k) = PoissonAr(k).yz;
+    UPoissonXYAr(k) = UPoissonAr(k).xy;
+    UPoissonXZAr(k) = UPoissonAr(k).xz;
+    UPoissonYZAr(k) = UPoissonAr(k).yz;
+    LPoissonXYAr(k) = LPoissonAr(k).xy;
+    LPoissonXZAr(k) = LPoissonAr(k).xz;
+    LPoissonYZAr(k) = LPoissonAr(k).yz;
+    
+    YoungsXArTr(k) = YoungsArTr(k).x;
+    YoungsYArTr(k) = YoungsArTr(k).y;
+    YoungsZArTr(k) = YoungsArTr(k).z;
+    UYoungsXArTr(k) = UYoungsArTr(k).x;
+    UYoungsYArTr(k) = UYoungsArTr(k).y;
+    UYoungsZArTr(k) = UYoungsArTr(k).z;
+    LYoungsXArTr(k) = LYoungsArTr(k).x;
+    LYoungsYArTr(k) = LYoungsArTr(k).y;
+    LYoungsZArTr(k) = LYoungsArTr(k).z;
+    ShearXYArTr(k) = ShearArTr(k).xy;
+    ShearXZArTr(k) = ShearArTr(k).xz;
+    ShearYZArTr(k) = ShearArTr(k).yz;
+    UShearXYArTr(k) = UShearArTr(k).xy;
+    UShearXZArTr(k) = UShearArTr(k).xz;
+    UShearYZArTr(k) = UShearArTr(k).yz;
+    LShearXYArTr(k) = LShearArTr(k).xy;
+    LShearXZArTr(k) = LShearArTr(k).xz;
+    LShearYZArTr(k) = LShearArTr(k).yz;
+    PoissonXYArTr(k) = PoissonArTr(k).xy;
+    PoissonXZArTr(k) = PoissonArTr(k).xz;
+    PoissonYZArTr(k) = PoissonArTr(k).yz;
+    UPoissonXYArTr(k) = UPoissonArTr(k).xy;
+    UPoissonXZArTr(k) = UPoissonArTr(k).xz;
+    UPoissonYZArTr(k) = UPoissonArTr(k).yz;
+    LPoissonXYArTr(k) = LPoissonArTr(k).xy;
+    LPoissonXZArTr(k) = LPoissonArTr(k).xz;
+    LPoissonYZArTr(k) = LPoissonArTr(k).yz;
+end
 %% Raw
 % Plot tensor coefficients
 % Initialize plot parameters
@@ -79,23 +165,23 @@ msize = 5;      % Marker Size
 
 % Young's Modulus
 % Initialize figure heading
-figure('Name','3-D Young''s Moduli, RAW',...
+figure('Name','3-D Youngs Moduli RAW',...
     'NumberTitle','off')
 hold on
 
 % Plot value and confidence interval of Young's modulus E1
-hE = errorbar(idx,YoungsRaw.x./10^6,(YoungsRaw.x-LYoungsRaw.x)./10^6,...
-    (UYoungsRaw.x-YoungsRaw.x)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,YoungsXRaw./10^6,(YoungsXRaw-LYoungsXRaw)./10^6,...
+    (UYoungsXRaw-YoungsXRaw)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E2
-hE = errorbar(idx,YoungsRaw.y./10^6,(YoungsRaw.y-LYoungsRaw.y)./10^6,...
-    (UYoungsRaw.y-YoungsRaw.y)./10^6,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,YoungsYRaw./10^6,(YoungsYRaw-LYoungsYRaw)./10^6,...
+    (UYoungsYRaw-YoungsYRaw)./10^6,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E3
-hE = errorbar(idx,YoungsRaw.z./10^6,(YoungsRaw.z-LYoungsRaw.z)./10^6,...
-    (UYoungsRaw.z-YoungsRaw.z)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,YoungsZRaw./10^6,(YoungsZRaw-LYoungsZRaw)./10^6,...
+    (UYoungsZRaw-YoungsZRaw)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar Young's Modulus E*
@@ -114,23 +200,23 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Shear Modulus
 % Initialize figure heading
-figure('Name','3-D Shear Moduli, RAW',...
+figure('Name','3-D Shear Moduli RAW',...
     'NumberTitle','off')
 hold on
 
 % Plot value and confidence interval of shear modulus G12
-hE = errorbar(idx,ShearRaw.xy./10^6,(ShearRaw.xy-LShearRaw.xy)./10^6,...
-    (UShearRaw.xy-ShearRaw.xy)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,ShearXYRaw./10^6,(ShearXYRaw-LShearXYRaw)./10^6,...
+    (UShearXYRaw-ShearXYRaw)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G13
-hE = errorbar(idx,ShearRaw.xz./10^6,(ShearRaw.xz-LShearRaw.xz)./10^6,...
-    (UShearRaw.xz-ShearRaw.xz)./10^6,'bdiamond','MarkerSize',msize);
+hE = errorbar(idx,ShearXZRaw./10^6,(ShearXZRaw-LShearXZRaw)./10^6,...
+    (UShearXZRaw-ShearXZRaw)./10^6,'bdiamond','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G23
-hE = errorbar(idx,ShearRaw.yz./10^6,(ShearRaw.yz-LShearRaw.yz)./10^6,...
-    (UShearRaw.yz-ShearRaw.yz)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,ShearYZRaw./10^6,(ShearYZRaw-LShearYZRaw)./10^6,...
+    (UShearYZRaw-ShearYZRaw)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar shear modulus G*
@@ -148,15 +234,15 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Poisson's Ratio
 % Initialize figure heading
-figure('Name','3-D Poisson''s Ratio',...
+figure('Name','3-D Poissons Ratio',...
     'NumberTitle','off')
 
 % Use subplots for better appearance
 ax(1) = subplot(1,3,1);
 hold on
 % Plot value and confidence interval of Poisson's ratio nu12
-hE = errorbar(idx,PoissonRaw.xy,PoissonRaw.xy-LPoissonRaw.xy,...
-    UPoissonRaw.xy-PoissonRaw.xy,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonXYRaw,PoissonXYRaw-LPoissonXYRaw,...
+    UPoissonXYRaw-PoissonXYRaw,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarRaw,'r--')
 legend('\it{\nu}\rm{_1_2}','\it{\nu*}');
@@ -167,8 +253,8 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu13
 ax(2) = subplot(1,3,2);
 hold on
-hE = errorbar(idx,PoissonRaw.xz,PoissonRaw.xz-LPoissonRaw.xz,...
-    UPoissonRaw.xz-PoissonRaw.xz,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonXZRaw,PoissonXZRaw-LPoissonXZRaw,...
+    UPoissonXZRaw-PoissonXZRaw,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarRaw,'r--')
 legend('\it{\nu}\rm{_1_3}','\it{\nu*}');
@@ -179,8 +265,8 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu23
 ax(3) = subplot(1,3,3);
 hold on
-hE = errorbar(idx,PoissonRaw.yz,PoissonRaw.yz-LPoissonRaw.yz,...
-    UPoissonRaw.yz-PoissonRaw.yz,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonYZRaw,PoissonYZRaw-LPoissonYZRaw,...
+    UPoissonYZRaw-PoissonYZRaw,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarRaw,'r--')
 legend('\it{\nu}\rm{_2_3}','\it{\nu*}');
@@ -200,23 +286,23 @@ msize = 5;      % Marker Size
 
 % Young's Modulus
 % Initialize figure heading
-figure('Name','3-D Young''s Moduli, Ar',...
+figure('Name','3-D Youngs Moduli Ar',...
     'NumberTitle','off')
 hold on
 
 % Plot value and confidence interval of Young's modulus E1
-hE = errorbar(idx,YoungsAr.x./10^6,(YoungsAr.x-LYoungsAr.x)./10^6,...
-    (UYoungsAr.x-YoungsAr.x)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,YoungsXAr./10^6,(YoungsXAr-LYoungsXAr)./10^6,...
+    (UYoungsXAr-YoungsXAr)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E2
-hE = errorbar(idx,YoungsAr.y./10^6,(YoungsAr.y-LYoungsAr.y)./10^6,...
-    (UYoungsAr.y-YoungsAr.y)./10^6,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,YoungsYAr./10^6,(YoungsYAr-LYoungsYAr)./10^6,...
+    (UYoungsYAr-YoungsYAr)./10^6,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E3
-hE = errorbar(idx,YoungsAr.z./10^6,(YoungsAr.z-LYoungsAr.z)./10^6,...
-    (UYoungsAr.z-YoungsAr.z)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,YoungsZAr./10^6,(YoungsZAr-LYoungsZAr)./10^6,...
+    (UYoungsZAr-YoungsZAr)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar Young's Modulus E*
@@ -235,23 +321,23 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Shear Modulus
 % Initialize figure heading
-figure('Name','3-D Shear Moduli, Ar',...
+figure('Name','3-D Shear Moduli Ar',...
     'NumberTitle','off')
 hold on
 
 % Plot value and confidence interval of shear modulus G12
-hE = errorbar(idx,ShearAr.xy./10^6,(ShearAr.xy-LShearAr.xy)./10^6,...
-    (UShearAr.xy-ShearAr.xy)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,ShearXYAr./10^6,(ShearXYAr-LShearXYAr)./10^6,...
+    (UShearXYAr-ShearXYAr)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G13
-hE = errorbar(idx,ShearAr.xz./10^6,(ShearAr.xz-LShearAr.xz)./10^6,...
-    (UShearAr.xz-ShearAr.xz)./10^6,'bdiamond','MarkerSize',msize);
+hE = errorbar(idx,ShearXZAr./10^6,(ShearXZAr-LShearXZAr)./10^6,...
+    (UShearXZAr-ShearXZAr)./10^6,'bdiamond','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G23
-hE = errorbar(idx,ShearAr.yz./10^6,(ShearAr.yz-LShearAr.yz)./10^6,...
-    (UShearAr.yz-ShearAr.yz)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,ShearYZAr./10^6,(ShearYZAr-LShearYZAr)./10^6,...
+    (UShearYZAr-ShearYZAr)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar shear modulus G*
@@ -269,15 +355,15 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Poisson's Ratio
 % Initialize figure heading
-figure('Name','3-D Poisson''s Ratio',...
+figure('Name','3-D Poissons Ratio',...
     'NumberTitle','off')
 
 % Use subplots for better appearance
 ax(1) = subplot(1,3,1);
 hold on
 % Plot value and confidence interval of Poisson's ratio nu12
-hE = errorbar(idx,PoissonAr.xy,PoissonAr.xy-LPoissonAr.xy,...
-    UPoissonAr.xy-PoissonAr.xy,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonXYAr,PoissonXYAr-LPoissonXYAr,...
+    UPoissonXYAr-PoissonXYAr,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarAr,'r--')
 legend('\it{\nu}\rm{_1_2}','\it{\nu*}');
@@ -288,8 +374,8 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu13
 ax(2) = subplot(1,3,2);
 hold on
-hE = errorbar(idx,PoissonAr.xz,PoissonAr.xz-LPoissonAr.xz,...
-    UPoissonAr.xz-PoissonAr.xz,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonXZAr,PoissonXZAr-LPoissonXZAr,...
+    UPoissonXZAr-PoissonXZAr,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarAr,'r--')
 legend('\it{\nu}\rm{_1_3}','\it{\nu*}');
@@ -300,8 +386,8 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu23
 ax(3) = subplot(1,3,3);
 hold on
-hE = errorbar(idx,PoissonAr.yz,PoissonAr.yz-LPoissonAr.yz,...
-    UPoissonAr.yz-PoissonAr.yz,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonYZAr,PoissonYZAr-LPoissonYZAr,...
+    UPoissonYZAr-PoissonYZAr,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarAr,'r--')
 legend('\it{\nu}\rm{_2_3}','\it{\nu*}');
@@ -321,23 +407,23 @@ msize = 5;      % Marker Size
 
 % Young's Modulus
 % Initialize figure heading
-figure('Name','3-D Young''s Moduli, ArTr',...
+figure('Name','3-D Youngs Moduli ArTr',...
     'NumberTitle','off')
 hold on
 
 % Plot value and confidence interval of Young's modulus E1
-hE = errorbar(idx,YoungsArTr.x./10^6,(YoungsArTr.x-LYoungsArTr.x)./10^6,...
-    (UYoungsArTr.x-YoungsArTr.x)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,YoungsXArTr./10^6,(YoungsXArTr-LYoungsXArTr)./10^6,...
+    (UYoungsXArTr-YoungsXArTr)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E2
-hE = errorbar(idx,YoungsArTr.y./10^6,(YoungsArTr.y-LYoungsArTr.y)./10^6,...
-    (UYoungsArTr.y-YoungsArTr.y)./10^6,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,YoungsYArTr./10^6,(YoungsYArTr-LYoungsYArTr)./10^6,...
+    (UYoungsYArTr-YoungsYArTr)./10^6,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E3
-hE = errorbar(idx,YoungsArTr.z./10^6,(YoungsArTr.z-LYoungsArTr.z)./10^6,...
-    (UYoungsArTr.z-YoungsArTr.z)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,YoungsZArTr./10^6,(YoungsZArTr-LYoungsZArTr)./10^6,...
+    (UYoungsZArTr-YoungsZArTr)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar Young's Modulus E*
@@ -356,23 +442,23 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Shear Modulus
 % Initialize figure heading
-figure('Name','3-D Shear Moduli, ArTr',...
+figure('Name','3-D Shear Moduli ArTr',...
     'NumberTitle','off')
 hold on
 
 % Plot value and confidence interval of shear modulus G12
-hE = errorbar(idx,ShearArTr.xy./10^6,(ShearArTr.xy-LShearArTr.xy)./10^6,...
-    (UShearArTr.xy-ShearArTr.xy)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,ShearXYArTr./10^6,(ShearXYArTr-LShearXYArTr)./10^6,...
+    (UShearXYArTr-ShearXYArTr)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G13
-hE = errorbar(idx,ShearArTr.xz./10^6,(ShearArTr.xz-LShearArTr.xz)./10^6,...
-    (UShearArTr.xz-ShearArTr.xz)./10^6,'bdiamond','MarkerSize',msize);
+hE = errorbar(idx,ShearXZArTr./10^6,(ShearXZArTr-LShearXZArTr)./10^6,...
+    (UShearXZArTr-ShearXZArTr)./10^6,'bdiamond','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G23
-hE = errorbar(idx,ShearArTr.yz./10^6,(ShearArTr.yz-LShearArTr.yz)./10^6,...
-    (UShearArTr.yz-ShearArTr.yz)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,ShearYZArTr./10^6,(ShearYZArTr-LShearYZArTr)./10^6,...
+    (UShearYZArTr-ShearYZArTr)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar shear modulus G*
@@ -390,15 +476,15 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Poisson's Ratio
 % Initialize figure heading
-figure('Name','3-D Poisson''s Ratio',...
+figure('Name','3-D Poissons Ratio',...
     'NumberTitle','off')
 
 % Use subplots for better appearance
 ax(1) = subplot(1,3,1);
 hold on
 % Plot value and confidence interval of Poisson's ratio nu12
-hE = errorbar(idx,PoissonArTr.xy,PoissonArTr.xy-LPoissonArTr.xy,...
-    UPoissonArTr.xy-PoissonArTr.xy,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonXYArTr,PoissonXYArTr-LPoissonXYArTr,...
+    UPoissonXYArTr-PoissonXYArTr,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarAr,'r--')
 legend('\it{\nu}\rm{_1_2}','\it{\nu*}');
@@ -409,8 +495,8 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu13
 ax(2) = subplot(1,3,2);
 hold on
-hE = errorbar(idx,PoissonArTr.xz,PoissonArTr.xz-LPoissonArTr.xz,...
-    UPoissonArTr.xz-PoissonArTr.xz,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonXZArTr,PoissonXZArTr-LPoissonXZArTr,...
+    UPoissonXZArTr-PoissonXZArTr,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarAr,'r--')
 legend('\it{\nu}\rm{_1_3}','\it{\nu*}');
@@ -421,8 +507,8 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu23
 ax(3) = subplot(1,3,3);
 hold on
-hE = errorbar(idx,PoissonArTr.yz,PoissonArTr.yz-LPoissonArTr.yz,...
-    UPoissonArTr.yz-PoissonArTr.yz,'ko','MarkerSize',msize);
+hE = errorbar(idx,PoissonYZArTr,PoissonYZArTr-LPoissonYZArTr,...
+    UPoissonYZArTr-PoissonYZArTr,'ko','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarAr,'r--')
 legend('\it{\nu}\rm{_2_3}','\it{\nu*}');
@@ -442,23 +528,23 @@ msize = 5;      % Marker Size
 
 % Young's Modulus
 % Initialize figure heading
-figure('Name','3-D Young''s Moduli, All Together',...
+figure('Name','3-D Youngs Moduli All Together',...
     'NumberTitle','off')
 hold on
 % Plot Raw Values First
 % Plot value and confidence interval of Young's modulus E1
-hE = errorbar(idx,YoungsRaw.x./10^6,(YoungsRaw.x-LYoungsRaw.x)./10^6,...
-    (UYoungsRaw.x-YoungsRaw.x)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,YoungsXRaw./10^6,(YoungsXRaw-LYoungsXRaw)./10^6,...
+    (UYoungsXRaw-YoungsXRaw)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E2
-hE = errorbar(idx,YoungsRaw.y./10^6,(YoungsRaw.y-LYoungsRaw.y)./10^6,...
-    (UYoungsRaw.y-YoungsRaw.y)./10^6,'rdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,YoungsYRaw./10^6,(YoungsYRaw-LYoungsYRaw)./10^6,...
+    (UYoungsYRaw-YoungsYRaw)./10^6,'rdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E3
-hE = errorbar(idx,YoungsRaw.z./10^6,(YoungsRaw.z-LYoungsRaw.z)./10^6,...
-    (UYoungsRaw.z-YoungsRaw.z)./10^6,'ro','MarkerSize',msize);
+hE = errorbar(idx,YoungsZRaw./10^6,(YoungsZRaw-LYoungsZRaw)./10^6,...
+    (UYoungsZRaw-YoungsZRaw)./10^6,'ro','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar Young's Modulus E*
@@ -466,18 +552,18 @@ plot(idx,EStarRaw./10^6,'r--')
 
 % Next Plot Ar adjusted values
 % Plot value and confidence interval of Young's modulus E1
-hE = errorbar(idx,YoungsAr.x./10^6,(YoungsAr.x-LYoungsAr.x)./10^6,...
-    (UYoungsAr.x-YoungsAr.x)./10^6,'gsquare','MarkerSize',msize);
+hE = errorbar(idx,YoungsXAr./10^6,(YoungsXAr-LYoungsXAr)./10^6,...
+    (UYoungsXAr-YoungsXAr)./10^6,'gsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E2
-hE = errorbar(idx,YoungsAr.y./10^6,(YoungsAr.y-LYoungsAr.y)./10^6,...
-    (UYoungsAr.y-YoungsAr.y)./10^6,'gdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,YoungsYAr./10^6,(YoungsYAr-LYoungsYAr)./10^6,...
+    (UYoungsYAr-YoungsYAr)./10^6,'gdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E3
-hE = errorbar(idx,YoungsAr.z./10^6,(YoungsAr.z-LYoungsAr.z)./10^6,...
-    (UYoungsAr.z-YoungsAr.z)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,YoungsZAr./10^6,(YoungsZAr-LYoungsZAr)./10^6,...
+    (UYoungsZAr-YoungsZAr)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar Young's Modulus E*
@@ -485,18 +571,18 @@ plot(idx,EStarAr./10^6,'g--')
 
 % Plot ArTr adjusted Values
 % Plot value and confidence interval of Young's modulus E1
-hE = errorbar(idx,YoungsArTr.x./10^6,(YoungsArTr.x-LYoungsArTr.x)./10^6,...
-    (UYoungsArTr.x-YoungsArTr.x)./10^6,'bsquare','MarkerSize',msize);
+hE = errorbar(idx,YoungsXArTr./10^6,(YoungsXArTr-LYoungsXArTr)./10^6,...
+    (UYoungsXArTr-YoungsXArTr)./10^6,'bsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E2
-hE = errorbar(idx,YoungsArTr.y./10^6,(YoungsArTr.y-LYoungsArTr.y)./10^6,...
-    (UYoungsArTr.y-YoungsArTr.y)./10^6,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,YoungsYArTr./10^6,(YoungsYArTr-LYoungsYArTr)./10^6,...
+    (UYoungsYArTr-YoungsYArTr)./10^6,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of Young's modulus E3
-hE = errorbar(idx,YoungsArTr.z./10^6,(YoungsArTr.z-LYoungsArTr.z)./10^6,...
-    (UYoungsArTr.z-YoungsArTr.z)./10^6,'bo','MarkerSize',msize);
+hE = errorbar(idx,YoungsZArTr./10^6,(YoungsZArTr-LYoungsZArTr)./10^6,...
+    (UYoungsZArTr-YoungsZArTr)./10^6,'bo','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Adjust format and appearance of Young's modulus plot
@@ -516,24 +602,24 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Shear Modulus
 % Initialize figure heading
-figure('Name','3-D Shear Moduli, All Together',...
+figure('Name','3-D Shear Moduli All Together',...
     'NumberTitle','off')
 hold on
 
 % Plot Raw Values First
 % Plot value and confidence interval of shear modulus G12
-hE = errorbar(idx,ShearRaw.xy./10^6,(ShearRaw.xy-LShearRaw.xy)./10^6,...
-    (UShearRaw.xy-ShearRaw.xy)./10^6,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,ShearXYRaw./10^6,(ShearXYRaw-LShearXYRaw)./10^6,...
+    (UShearXYRaw-ShearXYRaw)./10^6,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G13
-hE = errorbar(idx,ShearRaw.xz./10^6,(ShearRaw.xz-LShearRaw.xz)./10^6,...
-    (UShearRaw.xz-ShearRaw.xz)./10^6,'rdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,ShearXZRaw./10^6,(ShearXZRaw-LShearXZRaw)./10^6,...
+    (UShearXZRaw-ShearXZRaw)./10^6,'rdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G23
-hE = errorbar(idx,ShearRaw.yz./10^6,(ShearRaw.yz-LShearRaw.yz)./10^6,...
-    (UShearRaw.yz-ShearRaw.yz)./10^6,'ro','MarkerSize',msize);
+hE = errorbar(idx,ShearYZRaw./10^6,(ShearYZRaw-LShearYZRaw)./10^6,...
+    (UShearYZRaw-ShearYZRaw)./10^6,'ro','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar Young's Modulus E*
@@ -541,18 +627,18 @@ plot(idx,EStarRaw./10^6,'r--')
 
 % Next Plot Ar adjusted values
 % Plot value and confidence interval of shear modulus G12
-hE = errorbar(idx,ShearAr.xy./10^6,(ShearAr.xy-LShearAr.xy)./10^6,...
-    (UShearAr.xy-ShearAr.xy)./10^6,'gsquare','MarkerSize',msize);
+hE = errorbar(idx,ShearXYAr./10^6,(ShearXYAr-LShearXYAr)./10^6,...
+    (UShearXYAr-ShearXYAr)./10^6,'gsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G13
-hE = errorbar(idx,ShearAr.xz./10^6,(ShearAr.xz-LShearAr.xz)./10^6,...
-    (UShearAr.xz-ShearAr.xz)./10^6,'gdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,ShearXZAr./10^6,(ShearXZAr-LShearXZAr)./10^6,...
+    (UShearXZAr-ShearXZAr)./10^6,'gdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G23
-hE = errorbar(idx,ShearAr.yz./10^6,(ShearAr.yz-LShearAr.yz)./10^6,...
-    (UShearAr.yz-ShearAr.yz)./10^6,'go','MarkerSize',msize);
+hE = errorbar(idx,ShearYZAr./10^6,(ShearYZAr-LShearYZAr)./10^6,...
+    (UShearYZAr-ShearYZAr)./10^6,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value of scalar Young's Modulus E*
@@ -560,26 +646,26 @@ plot(idx,EStarAr./10^6,'g--')
 
 % Plot ArTr adjusted Values
 % Plot value and confidence interval of shear modulus G12
-hE = errorbar(idx,ShearArTr.xy./10^6,(ShearArTr.xy-LShearArTr.xy)./10^6,...
-    (UShearArTr.xy-ShearArTr.xy)./10^6,'bsquare','MarkerSize',msize);
+hE = errorbar(idx,ShearXYArTr./10^6,(ShearXYArTr-LShearXYArTr)./10^6,...
+    (UShearXYArTr-ShearXYArTr)./10^6,'bsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G13
-hE = errorbar(idx,ShearArTr.xz./10^6,(ShearArTr.xz-LShearArTr.xz)./10^6,...
-    (UShearArTr.xz-ShearArTr.xz)./10^6,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,ShearXZArTr./10^6,(ShearXZArTr-LShearXZArTr)./10^6,...
+    (UShearXZArTr-ShearXZArTr)./10^6,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 
 % Plot value and confidence interval of shear modulus G23
-hE = errorbar(idx,ShearArTr.yz./10^6,(ShearArTr.yz-LShearArTr.yz)./10^6,...
-    (UShearArTr.yz-ShearArTr.yz)./10^6,'bo','MarkerSize',msize);
+hE = errorbar(idx,ShearYZArTr./10^6,(ShearYZArTr-LShearYZArTr)./10^6,...
+    (UShearYZArTr-ShearYZArTr)./10^6,'bo','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
 
 % Adjust format and appearance of Young's modulus plot
-legend('\it{G}\rm{_1}\rm{^R^a^w}','\it{G}\rm{_2}\rm{^R^a^w}','\it{G}\rm{_3}\rm{^R^a^w}',...
+legend('\it{G}\rm{_1_2}\rm{^R^a^w}','\it{G}\rm{_1_3}\rm{^R^a^w}','\it{G}\rm{_2_3}\rm{^R^a^w}',...
     '\it{G*}\rm{^R^a^w}',...
-    '\it{G}\rm{_1}\rm{^A^r}','\it{G}\rm{_2}\rm{^A^r}','\it{G}\rm{_3}\rm{^A^r}',...
+    '\it{G}\rm{_1_2}\rm{^A^r}','\it{G}\rm{_1_3}\rm{^A^r}','\it{G}\rm{_2_3}\rm{^A^r}',...
     '\it{G*}\rm{^A^r}',...
-    '\it{G}\rm{_1}\rm{^A^r^T^r}','\it{G}\rm{_2}\rm{^A^r^T^r}','\it{G}\rm{_3}\rm{^A^r^T^r}',...
+    '\it{G}\rm{_1_2}\rm{^A^r^T^r}','\it{G}\rm{_1_3}\rm{^A^r^T^r}','\it{G}\rm{_2_3}\rm{^A^r^T^r}',...
     'Location','NorthEast');
 
 grid, box on
@@ -593,21 +679,21 @@ set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % Poisson's Ratio
 % Initialize figure heading
-figure('Name','3-D Poisson''s Ratio, All Values',...
+figure('Name','3-D Poissons Ratio All Values',...
     'NumberTitle','off')
 
 % Use subplots for better appearance
 ax(1) = subplot(1,3,1);
 hold on
 % Plot value and confidence interval of Poisson's ratio nu12
-hE = errorbar(idx,PoissonRaw.xy,PoissonRaw.xy-LPoissonRaw.xy,...
-    UPoissonRaw.xy-PoissonRaw.xy,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,PoissonXYRaw,PoissonXYRaw-LPoissonXYRaw,...
+    UPoissonXYRaw-PoissonXYRaw,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
-hE = errorbar(idx,PoissonAr.xy,PoissonAr.xy-LPoissonAr.xy,...
-    UPoissonAr.xy-PoissonAr.xy,'go','MarkerSize',msize);
+hE = errorbar(idx,PoissonXYAr,PoissonXYAr-LPoissonXYAr,...
+    UPoissonXYAr-PoissonXYAr,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
-hE = errorbar(idx,PoissonArTr.xy,PoissonArTr.xy-LPoissonArTr.xy,...
-    UPoissonArTr.xy-PoissonArTr.xy,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,PoissonXYArTr,PoissonXYArTr-LPoissonXYArTr,...
+    UPoissonXYArTr-PoissonXYArTr,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarRaw,'r--')
 plot(idx,nuStarAr,'g--')
@@ -621,14 +707,14 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu13
 ax(2) = subplot(1,3,2);
 hold on
-hE = errorbar(idx,PoissonRaw.xz,PoissonRaw.xz-LPoissonRaw.xz,...
-    UPoissonRaw.xz-PoissonRaw.xz,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,PoissonXZRaw,PoissonXZRaw-LPoissonXZRaw,...
+    UPoissonXZRaw-PoissonXZRaw,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
-hE = errorbar(idx,PoissonAr.xz,PoissonAr.xz-LPoissonAr.xz,...
-    UPoissonAr.xz-PoissonAr.xz,'go','MarkerSize',msize);
+hE = errorbar(idx,PoissonXZAr,PoissonXZAr-LPoissonXZAr,...
+    UPoissonXZAr-PoissonXZAr,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
-hE = errorbar(idx,PoissonArTr.xz,PoissonArTr.xz-LPoissonArTr.xz,...
-    UPoissonArTr.xz-PoissonArTr.xz,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,PoissonXZArTr,PoissonXZArTr-LPoissonXZArTr,...
+    UPoissonXZArTr-PoissonXZArTr,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarRaw,'r--')
 plot(idx,nuStarAr,'g--')
@@ -641,14 +727,14 @@ axis([-1 (endtime) 0 0.5])
 % Plot value and confidence interval of Poisson's ratio nu23
 ax(3) = subplot(1,3,3);
 hold on
-hE = errorbar(idx,PoissonRaw.yz,PoissonRaw.yz-LPoissonRaw.yz,...
-    UPoissonRaw.yz-PoissonRaw.yz,'rsquare','MarkerSize',msize);
+hE = errorbar(idx,PoissonYZRaw,PoissonYZRaw-LPoissonYZRaw,...
+    UPoissonYZRaw-PoissonYZRaw,'rsquare','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
-hE = errorbar(idx,PoissonAr.yz,PoissonAr.yz-LPoissonAr.yz,...
-    UPoissonAr.yz-PoissonAr.yz,'go','MarkerSize',msize);
+hE = errorbar(idx,PoissonYZAr,PoissonYZAr-LPoissonYZAr,...
+    UPoissonYZAr-PoissonYZAr,'go','MarkerSize',msize);
 errorbarwidth(hE,ebwidth);
-hE = errorbar(idx,PoissonArTr.yz,PoissonArTr.yz-LPoissonArTr.yz,...
-    UPoissonArTr.yz-PoissonArTr.yz,'bdiamond','MarkerSize',msize+1);
+hE = errorbar(idx,PoissonYZArTr,PoissonYZArTr-LPoissonYZArTr,...
+    UPoissonYZArTr-PoissonYZArTr,'bdiamond','MarkerSize',msize+1);
 errorbarwidth(hE,ebwidth);
 plot(idx,nuStarRaw,'r--')
 plot(idx,nuStarAr,'g--')

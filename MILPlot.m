@@ -48,7 +48,7 @@ msize = 5;      % Marker Size
 
 %% Plot Ellipsoids of Contact Fabric Tensor, MIL Fabric Tensor, and Isotropic Sphere
 for n = 1:length(idx)
-str = sprintf('3-D Tensor Comparisons: Time elapsed -- %2.1f hrs',idx(n));
+str = sprintf('3-D Tensor Comparisons Time elapsed -- %2.0f hrs',idx(n));
 figure('Name',str,'NumberTitle','off')
 surf(C1{n},C2{n},C3{n},'FaceColor',[0 1 0],'EdgeColor',[0 0.5 0]);   %Green
 hold on
@@ -69,7 +69,7 @@ end
 %CTAn to compare to Structure Thickness computed from sementation code.
 for n = 1:length(idx)
 
-str = sprintf('Structure Thickness Distribution: Time elapsed -- %2.1f hrs',idx(n));
+str = sprintf('Structure Thickness Distribution Time elapsed -- %2.0f hrs',idx(n));
 figure('Name',str,'NumberTitle','off')
 bar(StrucThickHist{n}(:,1)*PixSize,StrucThickHist{n}(:,2),'hist');
 
