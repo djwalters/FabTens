@@ -91,6 +91,7 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,idx,F2,F2Ci,...
     = ContactTensor(FileIn,1,PixSize,RootPath);
 %% Operate on Contact Fabric Tensor
 for n = 1:length(idx)
+    idx(n)
     % Generate an ellipsoid using the contact tensor to create a 3-D
     % visualization of of the distribution of bonds in the analyzed sample.
     % Generally assume contact tensor is in its principal orientation that is
@@ -165,7 +166,8 @@ for n = 1:length(idx)
     
 end
 %% Plots
-MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
+%Change 0 back to idx
+MILPlot(0,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
     StrucThickHist,MeanStrucThick,PixSize,spatialLabel,VolFrac,endtime);
 MechModuliPlot( EStarRaw, GStarRaw, nuStarRaw, EStarAr, GStarAr, nuStarAr,...
     YoungsRaw, LYoungsRaw, UYoungsRaw,...

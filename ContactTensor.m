@@ -129,6 +129,7 @@ h = waitbar(0,'Please wait...',...
 setappdata(h,'canceling',0)
 waitprev = 0;
 for n = 1:length(idx)
+    idx(n)
     % Build data structure of output
     for i = 1:length(hdr{n}{1});
         % Searches for numerical position of the end of character string
@@ -154,7 +155,7 @@ for n = 1:length(idx)
         % Creates a random sample of bond numbers that is the has the
         % same length as the number of bonds, and selected with
         % replacement.
-        SampRows = randsample(data{n}.Bond,length(data{n}.Bond),true);
+        SampRows = randsample(data{n}.Row,length(data{n}.Row),true);
         
         % Creates array of random sampled bond orientations based on
         % bonds identified in SampRows.
@@ -435,9 +436,9 @@ if RootPath == 0
             % Read files of segmentation data
             fid = fopen(FullPath, 'r');  %Open read only
             % Set headers and number of columns of data (24 columns currently)
-            hdr{1} = textscan(fid, '%s',24,'delimiter',',');
+            hdr{1} = textscan(fid, '%s',25,'delimiter',',');
             % Scan the numerical data (11 columns currently)
-            bonds{1} = textscan(fid, '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+            bonds{1} = textscan(fid, '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
                 ,'delimiter',',','HeaderLines',1);
             fclose(fid);
             idx = 0;
@@ -461,10 +462,10 @@ if RootPath == 0
                 FullPath = fullfile(FilePath,Files.name);
                 fid = fopen(FullPath, 'r');  %Open read only
                 % Set headers and number of columns of data (24 columns currently)
-                hdr{i} = textscan(fid, '%s',24,'delimiter',',');
+                hdr{i} = textscan(fid, '%s',25,'delimiter',',');
                 % Scan the numerical data (11 columns currently)
                 bonds{i} = textscan(fid...
-                    ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+                    ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
                     ,'delimiter',',','HeaderLines',1);
                 fclose(fid);
                 t1{i} = datevec(TimeFolds{i},'HHMM');
@@ -482,9 +483,9 @@ else
             % Read files of segmentation data
             fid = fopen(FullPath, 'r');  %Open read only
             % Set headers and number of columns of data (24 columns currently)
-            hdr{1} = textscan(fid, '%s',24,'delimiter',',');
+            hdr{1} = textscan(fid, '%s',25,'delimiter',',');
             % Scan the numerical data (11 columns currently)
-            bonds{1} = textscan(fid, '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+            bonds{1} = textscan(fid, '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
                 ,'delimiter',',','HeaderLines',1);
             fclose(fid);
             idx = 0;
@@ -508,10 +509,10 @@ else
                 FullPath = fullfile(FilePath,Files.name);
                 fid = fopen(FullPath, 'r');  %Open read only
                 % Set headers and number of columns of data (24 columns currently)
-                hdr{i} = textscan(fid, '%s',24,'delimiter',',');
+                hdr{i} = textscan(fid, '%s',25,'delimiter',',');
                 % Scan the numerical data (11 columns currently)
                 bonds{i} = textscan(fid...
-                    ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
+                    ,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f'...
                     ,'delimiter',',','HeaderLines',1);
                 fclose(fid);
                 t1{i} = datevec(TimeFolds{i},'HHMM');
