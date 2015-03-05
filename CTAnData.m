@@ -1,5 +1,6 @@
 function [idx,PixSize,VolFrac,EigVals,EigVecs,...
-    MeanStrucThick,StrucThickHist,RootPath] = CTAnData(FileIn)
+    MeanStrucThick,StrucThickHist,MeanStrucSep,StrucSepHist,RootPath]...
+    = CTAnData(FileIn)
 % CTAnData.m
 % function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 %     MeanStrucThick,StrucThickHist,RootPath] = CTAnData(FileIn)
@@ -76,7 +77,12 @@ switch FileIn
         [LocalPath,'.txt'],'Select CTAn Structure Thickness Data');
         StrucThickFullPath = [CTAnStrucThickPath,CTAnStrucThickFile];
         [MeanStrucThick,StrucThickHist{1}] = ...
-            importStrucThick(StrucThickFullPath,12);
+            importStruc(StrucThickFullPath,12);
+        [CTAnStrucSepFile,CTAnStrucSepPath] = uigetfile(...
+        [LocalPath,'.txt'],'Select CTAn Structure Seperation Data');
+        StrucSepFullPath = [CTAnStrucSepPath,CTAnStrucSepFile];
+        [MeanStrucSep,StrucSepHist{1}] = ...
+            importStruc(StrucSepFullPath,12);
         idx = 0;
         endtime = idx+1;
         RootPath = LocalPath;
@@ -93,17 +99,21 @@ switch FileIn
         for i = 1:length(TimeFolds)
             FilePath = fullfile(RootPath,TimeFolds{i});
             Files = dir(fullfile(FilePath,'*.txt'));
-            if size(Files,1) > 2
-                error('Cannot have more than two .txt file in results time folder.  Please reduce the number of .csv files to 1 in each time folder containing results')
+            if size(Files,1) > 3
+                error('Cannot have more than three .txt file in results time folder.  Please reduce the number of .csv files to 1 in each time folder containing results')
             end
             CTAnFullPath1 = fullfile(FilePath,Files(1).name);
             CTAnFullPath2 = fullfile(FilePath,Files(2).name);
+            CTAnFullPath3 = fullfile(FilePath,Files(3).name);
             [PixSize(i),VolFrac(i),EigVals(:,i),EigVecs(:,:,i)] = importCTAnData(CTAnFullPath1)
 %             EigVecs(:,:,i) = (EigVecs{i})';
             VolFrac(i) = VolFrac(i)/100;
             
             [MeanStrucThick(i),StrucThickHist{i}] = ...
-            importStrucThick(CTAnFullPath2,12)
+                importStruc(CTAnFullPath2,12)
+        
+            [MeanStrucSep(i),StrucSepHist{i}] = ...
+                importStruc(CTAnFullPath3,12)
         
             t1{i} = datevec(TimeFolds{i},'HHMM');
             idx(i) = etime(t1{i},t1{1})/60^2;
@@ -243,7 +253,7 @@ fclose(fileID);
 end
 
 function [MeanStrucThick,StrucThickHist] = ...
-    importStrucThick(filename,intervals)
+    importStruc(filename,intervals)
 %% Open the text file.
 fileID = fopen(filename,'r');
 delimiter = ',';
