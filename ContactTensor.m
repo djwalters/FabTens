@@ -134,8 +134,7 @@ for n = 1:length(idx)
     for i = 1:length(hdr{n}{1});
         % Searches for numerical position of the end of character string
         % before unit definition, i.e. rb(um), idx = 3 results in (data.rb)
-        i
-        label = strfind(hdr{n}{1}{i},'(')
+        label = strfind(hdr{n}{1}{i},'(');
         data{n}.(hdr{n}{1}{i}(1:label-1)) = bonds{n}{i};
     end
     
