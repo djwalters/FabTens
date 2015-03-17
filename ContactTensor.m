@@ -129,7 +129,7 @@ h = waitbar(0,'Please wait...',...
 setappdata(h,'canceling',0)
 waitprev = 0;
 for n = 1:length(idx)
-    idx(n)
+    sprintf('idx(n)= %2.1f',idx(n))
     % Build data structure of output
     for i = 1:length(hdr{n}{1});
         % Searches for numerical position of the end of character string
@@ -450,7 +450,7 @@ if RootPath == 0
             RootPath = uigetdir(LocalPath,...
                 'Select root directory of segmentation results');
             % Get times from folders of specific tests
-            TimeFolds = GetFolds(RootPath)
+            TimeFolds = GetFolds(RootPath);
             
             % Loop through to get path for each data set and record the time
             for i = 1:length(TimeFolds)

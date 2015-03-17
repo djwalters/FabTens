@@ -92,7 +92,7 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,F2,F2Ci,...
     = ContactTensor(FileIn,1,PixSize,RootPath);
 %% Operate on Contact Fabric Tensor
 for n = 1:length(idx)
-    idx(n)
+    idx(n);
     % Generate an ellipsoid using the contact tensor to create a 3-D
     % visualization of of the distribution of bonds in the analyzed sample.
     % Generally assume contact tensor is in its principal orientation that is

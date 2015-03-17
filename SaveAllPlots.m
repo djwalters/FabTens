@@ -8,9 +8,9 @@ directory = uigetdir(LocalPath,...
 
 for i = 1:length(hfigs)
     % Set figure size and position on screen
-    set(i,'Units','inches')
-    set(i,'Position',[3,3,6,3.5])
-    figure(i)        %Bring figure to foreground
+    set(hfigs(i),'Units','inches')
+    set(hfigs(i),'Position',[3,3,6,3.5])
+    figure(hfigs(i))        %Bring figure to foreground
     filename = get(gcf,'name'); %Get window title for filename
     % If no special window title specified, give generic filename
     if isempty(filename)

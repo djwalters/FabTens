@@ -105,15 +105,15 @@ switch FileIn
             CTAnFullPath1 = fullfile(FilePath,Files(1).name);
             CTAnFullPath2 = fullfile(FilePath,Files(2).name);
             CTAnFullPath3 = fullfile(FilePath,Files(3).name);
-            [PixSize(i),VolFrac(i),EigVals(:,i),EigVecs(:,:,i)] = importCTAnData(CTAnFullPath1)
+            [PixSize(i),VolFrac(i),EigVals(:,i),EigVecs(:,:,i)] = importCTAnData(CTAnFullPath1);
 %             EigVecs(:,:,i) = (EigVecs{i})';
             VolFrac(i) = VolFrac(i)/100;
             
             [MeanStrucThick(i),StrucThickHist{i}] = ...
-                importStruc(CTAnFullPath2,12)
+                importStruc(CTAnFullPath2,12);
         
             [MeanStrucSep(i),StrucSepHist{i}] = ...
-                importStruc(CTAnFullPath3,12)
+                importStruc(CTAnFullPath3,12);
         
             t1{i} = datevec(TimeFolds{i},'HHMM');
             idx(i) = etime(t1{i},t1{1})/60^2;
