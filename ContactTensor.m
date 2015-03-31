@@ -260,7 +260,7 @@ for n = 1:length(idx)
     %% Calculate mean coordination number
     numBonds = length(data{n}.Bond);
     numGrains = length(unique([data{n}.G1 data{n}.G2]));
-    coordNum(n) = numBonds/numGrains;
+    coordNum(n) = 2*numBonds/numGrains;
     
     %% Calculate mean bond radius to grain radius ratio
     bondRad{n} = (data{n}.BA./pi).^0.5;
