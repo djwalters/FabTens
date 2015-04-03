@@ -1,5 +1,5 @@
-function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,F2,F2Ci,...
-    F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,coordNum,shapeFac,Tr]...
+function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,Tr,F2,F2Ci,...
+    F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,coordNum,shapeFac]...
     = AllTensors(FileIn)
     
 % AllTensors.m
@@ -89,7 +89,7 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,F2,F2Ci,...
 %% Import data from Contact Tensor Segmentation Analysis
 [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
     coordNum,shapeFac,idx,endtime,spatialLabel]...
-    = ContactTensor(FileIn,1,PixSize,RootPath);
+    = ContactTensor(FileIn,'geocenter2center',1,PixSize,RootPath);
 %% Operate on Contact Fabric Tensor
 for n = 1:length(idx)
     idx(n);
@@ -100,12 +100,14 @@ for n = 1:length(idx)
     %
     % To compare ellipsoids produced by the Contact Fabric Tensor, the MIL
     % Fabric Tensor, and an isotropic sphere, all volumes are normalize to one.
-    VCON(n) = (4/3)*pi*F2(1,1,n)*F2(2,2,n)*F2(3,3,n);
+%     VCON(n) = (4/3)*pi*F2(1,1,n)*F2(2,2,n)*F2(3,3,n);
     %Generates an ellipsoid with the radii scaled such that the volume equals 1
-    CRad1(n) = F2(1,1,n)/(VCON(n)^(1/3));
-    CRad2(n) = F2(2,2,n)/(VCON(n)^(1/3));
-    CRad3(n) = F2(3,3,n)/(VCON(n)^(1/3));
-    
+%     CRad1(n) = F2(1,1,n)/(VCON(n)^(1/3));
+%     CRad2(n) = F2(2,2,n)/(VCON(n)^(1/3));
+%     CRad3(n) = F2(3,3,n)/(VCON(n)^(1/3));
+    CRad1(n) = F2(1,1,n);
+    CRad2(n) = F2(2,2,n);
+    CRad3(n) = F2(3,3,n);
     
     [C1{n},C2{n},C3{n}]=ellipsoid(0,0,0,CRad1(n),CRad2(n),CRad3(n),30);
     
@@ -117,12 +119,15 @@ for n = 1:length(idx)
     % mesh.
     % E is the EigenVector matrix as reported from CTAn.  Each column is the
     % EigenVector associated with each EigenValue M1,M2,and M3
-    VMIL(n) = (4/3)*pi*D(1,n)*D(2,n)*D(3,n);
+%     VMIL(n) = (4/3)*pi*D(1,n)*D(2,n)*D(3,n);
     %Generates an ellipsoid with the radii scaled such that the volume equals 1
-    MILRad1(n) = D(1,n)/(VMIL(n)^(1/3));
-    MILRad2(n) = D(2,n)/(VMIL(n)^(1/3));
-    MILRad3(n) = D(3,n)/(VMIL(n)^(1/3));
-    
+%     MILRad1(n) = D(1,n)/(VMIL(n)^(1/3));
+%     MILRad2(n) = D(2,n)/(VMIL(n)^(1/3));
+%     MILRad3(n) = D(3,n)/(VMIL(n)^(1/3));
+    MilMag = sum(D(:,n));
+    MILRad1(n) = D(1,n)/MilMag;
+    MILRad2(n) = D(2,n)/MilMag;
+    MILRad3(n) = D(3,n)/MilMag;    
     [M1{n},M2{n},M3{n}]=ellipsoid(0,0,0,MILRad1(n),MILRad2(n),MILRad3(n),30);
     sz=size(M1{n});
     for x=1:sz(1)
@@ -137,7 +142,8 @@ for n = 1:length(idx)
 
     
     %% Compute volume of MIL Ellipsoid for equivalent isotropic sphere
-    rs = (3/4 / pi)^(1/3);
+%     rs = (3/4 / pi)^(1/3);
+    rs = 1/3;
     
     [S1,S2,S3] = sphere(30);
     S1 = S1*rs;

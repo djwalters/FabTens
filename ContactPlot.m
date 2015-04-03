@@ -88,7 +88,7 @@ errorbarwidth(hE,ebwidth);
 
 % Adjust format and appearance of contact tensor coefficient plot
 grid
-axis([-1 (endtime) 0 1])
+axis([-1 (endtime) 0.2 0.5])
 y1 = ylabel('3-D Tensor Diagonals (-)');
 x1 = xlabel('Elapsed Time ( hrs )');
 set([y1 x1],'FontName',font,'FontSize',fsize)

@@ -27,19 +27,25 @@ function Tr = TensorRatio(F2,MILVal,MILVec)
 %
 % To compare ellipsoids produced by the Contact Fabric Tensor, the MIL
 % Fabric Tensor, and an isotropic sphere, all volumes are normalize to one.
-Vcon = (4/3)*pi*F2(1,1)*F2(2,2)*F2(3,3);
+% Vcon = (4/3)*pi*F2(1,1)*F2(2,2)*F2(3,3);
 %Generates an ellipsoid with the radii scaled such that the volume equals 1
-CRad1 = F2(1,1)/(Vcon^(1/3));
-CRad2 = F2(2,2)/(Vcon^(1/3));
-CRad3 = F2(3,3)/(Vcon^(1/3));
-
+% CRad1 = F2(1,1)/(Vcon^(1/3));
+% CRad2 = F2(2,2)/(Vcon^(1/3));
+% CRad3 = F2(3,3)/(Vcon^(1/3));
+CRad1 = F2(1,1);
+CRad2 = F2(2,2);
+CRad3 = F2(3,3);
 %% Ellipsoid Radii of MIL Fabric Tensor
 
-Vmil = (4/3)*pi*MILVal(1)*MILVal(2)*MILVal(3);
+% Vmil = (4/3)*pi*MILVal(1)*MILVal(2)*MILVal(3);
 %Generates an ellipsoid with the radii scaled such that the volume equals 1
-MILRad1 = MILVal(1)/(Vmil^(1/3));
-MILRad2 = MILVal(2)/(Vmil^(1/3));
-MILRad3 = MILVal(3)/(Vmil^(1/3));
+MilMag = sum(MILVal);
+% MILRad1 = MILVal(1)/(Vmil^(1/3));
+% MILRad2 = MILVal(2)/(Vmil^(1/3));
+% MILRad3 = MILVal(3)/(Vmil^(1/3));
+MILRad1 = MILVal(1)/MilMag;
+MILRad2 = MILVal(2)/MilMag;
+MILRad3 = MILVal(3)/MilMag;
 
 % Adjust orientation of axes using the eigen vectors.  The Eigen Vector
 % matrix should be 3x3 with the columns being individual vectors

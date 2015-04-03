@@ -88,7 +88,7 @@ hold on
 line([MeanStrucThick(n)*PixSize MeanStrucThick(n)*PixSize],...
     YLimits,'Color','r','LineWidth',2)
 text(MeanStrucThick(n)*PixSize,YLimits(2)-(YLimits(2)*0.05)...
-    ,'\leftarrow Mean Structure Thickness')
+    ,'\leftarrow      Mean Structure Thickness')
 set([y1 x1],'FontName',font,'FontSize',fsize)
 set(gca,'FontName',font,'FontSize',fsize)
 end
@@ -109,7 +109,7 @@ hold on
 line([MeanStrucSep(n)*PixSize MeanStrucSep(n)*PixSize],...
     YLimits,'Color','r','LineWidth',2)
 text(MeanStrucSep(n)*PixSize,YLimits(2)-(YLimits(2)*0.05)...
-    ,'\leftarrow Mean Structure Thickness')
+    ,'\leftarrow      Mean Structure Seperation')
 set([y1 x1],'FontName',font,'FontSize',fsize)
 set(gca,'FontName',font,'FontSize',fsize)
 end

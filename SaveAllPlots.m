@@ -4,7 +4,9 @@ hfigs = get(0,'children');  %Get list of figures
 
 LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
 directory = uigetdir(LocalPath,...
-            'Select  directory to save plots');
+    'Select  directory to save plots');
+DataPath = fullfile(directory,'TensorData');
+save(DataPath)
 
 for i = 1:length(hfigs)
     % Set figure size and position on screen
