@@ -1,6 +1,6 @@
 function [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
     coordNum,shapeFac,idx,endtime,spatialLabel]...
-    = ContactTensor(FileIn,Plot,varargin)
+    = ContactTensor(FileIn,BondVec,Plot,varargin)
 % ContactTensor calculates the coefficients for the 2nd and 4th order
 % contact tensor derived from 3-D segmentation data.  For 2-D stereology,
 % refer to Dr. Rich Shertzer's code for analysis.
@@ -11,6 +11,21 @@ function [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
 %   INPUTS: 
 %       FileIn: specifies whether a single file is used or multiple files
 %       chronologically ordered. 1 for single file, 2 for multiple files
+%
+%       BondVec: String input specifying method for calculating contact
+%       tensor; options
+%           'planenorm' - uses bond plane normal vector directly.  Caution
+%           must be applied when using this value as bonds must be
+%           sufficiently large to accurately define the plane.
+%
+%           'geocenter2center' - utilizes the vector connecting each grain
+%           center (based on center of effective spherical grain radius) 
+%           in the grain-bond pair.  Can be used when 'planenorm' is not 
+%           giving accurate results
+%
+%           'masscenter2center' - utilizes the vector connecting each grain
+%           center (mass centroid) in the grain-bond pair.  Can be used 
+%           when 'planenorm' is not giving accurate results.
 %
 %       Plot: Indicate 1 to include plots, 0 to exclude plots
 %
@@ -98,6 +113,9 @@ function [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
 %
 % Version 1.2.5 - Removed plots to seperate external function called
 % ContactPlot.m.  October 22, 2014
+%
+% Version 1.3.0 - Added switch to how bond orientations are calculated.
+% April 2, 2015
 
 %% Check Inputs
 if isempty(varargin)
@@ -138,8 +156,38 @@ for n = 1:length(idx)
         data{n}.(hdr{n}{1}{i}(1:label-1)) = bonds{n}{i};
     end
     
-    
-    BondPlanes{n} = [data{n}.BNx,data{n}.BNy,data{n}.BNz];
+    switch BondVec
+        case 'planenorm'
+            % Generates bond plane cell array directly from bond plane
+            % normal vectors calculated during 3D segmentation
+            BondPlanes{n} = [data{n}.BNx,data{n}.BNy,data{n}.BNz];
+            
+        case 'geocenter2center'
+            % Generates bond plane cell array from the coordinates of the
+            % centers of each grain in a grain-bond pair based on the
+            % geometric center (grain radius center)
+            
+            % Calculate center to center vectors for all data at once
+            BP = [data{n}.G2RCx - data{n}.G1RCx,...
+                data{n}.G2RCy - data{n}.G1RCy,...
+                data{n}.G2RCz - data{n}.G1RCz];
+            
+            %Need unit vectors.  These are generated here, one by one
+            for i = 1:size(BP,1)
+                BondPlanes{n}(i,:) = BP(i,:)/norm(BP(i,:));
+            end
+        case 'masscenter2center'
+            % Generates bond plane cell array from the coordinates of the
+            % centers of each grain in a grain-bond pair based on the
+            % mass center (mass centroid)
+            BP = [data{n}.G2Cx - data{n}.G1Cx,...
+                data{n}.G2Cy - data{n}.G1Cy,...
+                data{n}.G2Cz - data{n}.G1Cz];
+            for i = 1:size(BP,1)
+                BondPlanes{n}(i,:) = BP(i,:)/norm(BP(i,:));
+            end
+    end
+            
     
     % Bootstrap sampling for confidence intervals
     for p = 1:nboot
