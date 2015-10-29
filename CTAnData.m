@@ -63,8 +63,8 @@ function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 %% Import Files
 switch FileIn
     case 1
-%         LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
-        LocalPath = 'C:\Users\David\Documents\MSU Research\Doctoral Work\Mechanical Testing\Radiation Recrystallization\PhD Work\';
+        LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+%         LocalPath = 'C:\Users\David\Documents\MSU Research\Doctoral Work\Mechanical Testing\Radiation Recrystallization\PhD Work\';
         [CTAnStereoFile,CTAnStereoPath] = uigetfile(...
             [LocalPath,'.txt'],'Select CTAn Stereology Data');
         CTAnFullPath = [CTAnStereoPath,CTAnStereoFile];

@@ -35,31 +35,18 @@ function Tr = TensorRatio(F2,MILVal,MILVec)
 CRad1 = F2(1,1);
 CRad2 = F2(2,2);
 CRad3 = F2(3,3);
-<<<<<<< HEAD
-=======
 
 CRad = [CRad1; CRad2; CRad3];
->>>>>>> 6365aa2a1982a0b11d1307bf991358b02ac7582f
 %% Ellipsoid Radii of MIL Fabric Tensor
 
 % Vmil = (4/3)*pi*MILVal(1)*MILVal(2)*MILVal(3);
 %Generates an ellipsoid with the radii scaled such that the volume equals 1
-<<<<<<< HEAD
-MilMag = sum(MILVal);
-% MILRad1 = MILVal(1)/(Vmil^(1/3));
-% MILRad2 = MILVal(2)/(Vmil^(1/3));
-% MILRad3 = MILVal(3)/(Vmil^(1/3));
-MILRad1 = MILVal(1)/MilMag;
-MILRad2 = MILVal(2)/MilMag;
-MILRad3 = MILVal(3)/MilMag;
-=======
 % MILRad1 = MILVal(1)/(Vmil^(1/3));
 % MILRad2 = MILVal(2)/(Vmil^(1/3));
 % MILRad3 = MILVal(3)/(Vmil^(1/3));
 MILRad1 = MILVal(1)/sum(MILVal);
 MILRad2 = MILVal(2)/sum(MILVal);
 MILRad3 = MILVal(3)/sum(MILVal);
->>>>>>> 6365aa2a1982a0b11d1307bf991358b02ac7582f
 
 % Adjust orientation of axes using the eigen vectors.  The Eigen Vector
 % matrix should be 3x3 with the columns being individual vectors
