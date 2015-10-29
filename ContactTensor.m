@@ -116,6 +116,9 @@ function [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
 %
 % Version 1.3.0 - Added switch to how bond orientations are calculated.
 % April 2, 2015
+%
+% Version 1.3.1 - Updated correct file paths
+% October 29, 2015
 
 %% Check Inputs
 if isempty(varargin)

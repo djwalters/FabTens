@@ -79,6 +79,8 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,Tr,F2,F2Ci,...
 % Version: 2.1 - October 28, 2014
 %   - Added function for calculating the Tensor Ratio.  Inclusion of
 %   mechanical properties is the next task.
+% Version: 2.2 - October 29, 2015
+%   - Changed how the MIL tensor is calculated
 % AUTHOR: David J. Walters; Montana State University
 
 

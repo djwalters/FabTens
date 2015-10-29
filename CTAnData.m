@@ -58,6 +58,7 @@ function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 %       file selection in the correct folder.
 %
 % Version: 1.0 - October 23, 2014
+% Version: 1.1 - Updated filepaths, October 29, 2015
 % AUTHOR: David J. Walters; Montana State University
 
 %% Import Files

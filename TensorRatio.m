@@ -17,6 +17,9 @@ function Tr = TensorRatio(F2,MILVal,MILVec)
 %
 % Version: 1.0 - October 28, 2014
 %
+% Version: 1.1 - Updated computation of the MIL tensor and reset the
+% normaliztion parameters. October 29, 2015
+%
 % AUTHOR: David J. Walters; Montana State University
 
 %% Ellipsoid Radii of Contact Tensor
