@@ -63,7 +63,8 @@ function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 %% Import Files
 switch FileIn
     case 1
-        LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+%         LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+        LocalPath = 'C:\Users\David\Documents\MSU Research\Doctoral Work\Mechanical Testing\Radiation Recrystallization\PhD Work\';
         [CTAnStereoFile,CTAnStereoPath] = uigetfile(...
             [LocalPath,'.txt'],'Select CTAn Stereology Data');
         CTAnFullPath = [CTAnStereoPath,CTAnStereoFile];
@@ -190,15 +191,17 @@ VolFrac = [dataArray{1:end-1}];
 
 %% Import EigVals
 % Initialize variables for EigVals.
-% startRow = 28;
-% endRow = 30;
-startRow = 11;  %Really row 28 but using previous data 17+11=28
-endRow = 13;    %Really row 28 but using previous data 17+13=30
+% startRow = 61;
+% endRow = 61;
+startRow = 44;  %Really row 28 but using previous data 17+44=61
+endRow = 44;    %Really row 28 but using previous data 17+44=61
 
 % Format string for each line of text:
 %   column3: double (%f)
+%	column4: double (%f)
+%   column5: double (%f)
 % For more information, see the TEXTSCAN documentation.
-formatSpec = '%*s%*s%f%*s%*s%*s%[^\n\r]';
+formatSpec = '%*s%*s%f%f%f%*s%[^\n\r]';
 
 % Read columns of data according to format string.
 % This call is based on the structure of the file used to generate this
@@ -215,13 +218,14 @@ end
 
 % Create output variable
 EigVals = [dataArray{1:end-1}];
+EigVals = EigVals';
 
 %% Import EigVecs
 % Initialize variables for EigVecs.
 % startRow = 91;
 % endRow = 93;
-startRow = 61;  %Really row 91 but using previous data 30+61=91
-endRow = 63;    %Really row 93 but using previous data 30+63=93
+startRow = 30;  %Really row 91 but using previous data 61+30=91
+endRow = 32;    %Really row 93 but using previous data 61+32=93
 % Format string for each line of text:
 %   column3: double (%f)
 %	column4: double (%f)
@@ -246,7 +250,7 @@ end
 
 % Create output variable
 EigVecs = [dataArray{1:end-1}];
-EigVecs = EigVecs';
+EigVecs = EigVecs'
 
 %% Close the text file.
 fclose(fileID);

@@ -526,9 +526,15 @@ else
     switch FileIn
         case 1
 %             LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+<<<<<<< HEAD
             [FileName,FilePath] = uigetfile([RootPath,'.csv'],'Select Segmentation Data');
             FullPath = [FilePath,FileName];
 %             FullPath = [RootPath,'Spheres.csv'];
+=======
+% !!!Uncomment when going back[FileName,FilePath] = uigetfile([RootPath,'.csv'],'Select Segmentation Data');
+%             FullPath = [FilePath,FileName];
+            FullPath = [RootPath,'VertEllipses.csv'];
+>>>>>>> 6365aa2a1982a0b11d1307bf991358b02ac7582f
             % Read files of segmentation data
             fid = fopen(FullPath, 'r');  %Open read only
             % Set headers and number of columns of data (24 columns currently)

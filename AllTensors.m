@@ -108,6 +108,10 @@ for n = 1:length(idx)
     CRad1(n) = F2(1,1,n);
     CRad2(n) = F2(2,2,n);
     CRad3(n) = F2(3,3,n);
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 6365aa2a1982a0b11d1307bf991358b02ac7582f
     
     [C1{n},C2{n},C3{n}]=ellipsoid(0,0,0,CRad1(n),CRad2(n),CRad3(n),30);
     
@@ -124,16 +128,24 @@ for n = 1:length(idx)
 %     MILRad1(n) = D(1,n)/(VMIL(n)^(1/3));
 %     MILRad2(n) = D(2,n)/(VMIL(n)^(1/3));
 %     MILRad3(n) = D(3,n)/(VMIL(n)^(1/3));
+<<<<<<< HEAD
     MilMag = sum(D(:,n));
     MILRad1(n) = D(1,n)/MilMag;
     MILRad2(n) = D(2,n)/MilMag;
     MILRad3(n) = D(3,n)/MilMag;    
+=======
+    MILMatrix = D(:,n);
+    MILRad1(n) = D(1,n)/sum(MILMatrix)
+    MILRad2(n) = D(2,n)/sum(MILMatrix)
+    MILRad3(n) = D(3,n)/sum(MILMatrix)
+    
+>>>>>>> 6365aa2a1982a0b11d1307bf991358b02ac7582f
     [M1{n},M2{n},M3{n}]=ellipsoid(0,0,0,MILRad1(n),MILRad2(n),MILRad3(n),30);
     sz=size(M1{n});
     for x=1:sz(1)
         for y=1:sz(2)
             A=[M1{n}(x,y) M2{n}(x,y) M3{n}(x,y)]';
-            A=E(:,:,n)*A;
+            A=E(:,:,n)'*A;
             M1{n}(x,y)=A(1);M2{n}(x,y)=A(2);M3{n}(x,y)=A(3);
         end
     end
@@ -172,7 +184,7 @@ for n = 1:length(idx)
         MechModuli(VolFrac(n), coordNum(n), meanBondRad(n), meanGrainRad(n), F2(:,:,n), F2Ci(:,:,n,:), shapeFac(n) , Tr(:,n));
     
 end
-%% Plots
+% Plots
 MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
     StrucThickHist,MeanStrucThick,StrucSepHist,MeanStrucSep,...
     PixSize,spatialLabel,VolFrac,endtime);

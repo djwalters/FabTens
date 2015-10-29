@@ -35,10 +35,16 @@ function Tr = TensorRatio(F2,MILVal,MILVec)
 CRad1 = F2(1,1);
 CRad2 = F2(2,2);
 CRad3 = F2(3,3);
+<<<<<<< HEAD
+=======
+
+CRad = [CRad1; CRad2; CRad3];
+>>>>>>> 6365aa2a1982a0b11d1307bf991358b02ac7582f
 %% Ellipsoid Radii of MIL Fabric Tensor
 
 % Vmil = (4/3)*pi*MILVal(1)*MILVal(2)*MILVal(3);
 %Generates an ellipsoid with the radii scaled such that the volume equals 1
+<<<<<<< HEAD
 MilMag = sum(MILVal);
 % MILRad1 = MILVal(1)/(Vmil^(1/3));
 % MILRad2 = MILVal(2)/(Vmil^(1/3));
@@ -46,16 +52,44 @@ MilMag = sum(MILVal);
 MILRad1 = MILVal(1)/MilMag;
 MILRad2 = MILVal(2)/MilMag;
 MILRad3 = MILVal(3)/MilMag;
+=======
+% MILRad1 = MILVal(1)/(Vmil^(1/3));
+% MILRad2 = MILVal(2)/(Vmil^(1/3));
+% MILRad3 = MILVal(3)/(Vmil^(1/3));
+MILRad1 = MILVal(1)/sum(MILVal);
+MILRad2 = MILVal(2)/sum(MILVal);
+MILRad3 = MILVal(3)/sum(MILVal);
+>>>>>>> 6365aa2a1982a0b11d1307bf991358b02ac7582f
 
 % Adjust orientation of axes using the eigen vectors.  The Eigen Vector
 % matrix should be 3x3 with the columns being individual vectors
 
-MILRad1Vec = MILRad1 * MILVec(:,1);
-MILRad2Vec = MILRad2 * MILVec(:,2);
-MILRad3Vec = MILRad3 * MILVec(:,3);
+MILRad1Vec = MILRad1 * MILVec(1,:)
+MILRad2Vec = MILRad2 * MILVec(2,:)
+MILRad3Vec = MILRad3 * MILVec(3,:)
 
-MILSum = abs(MILRad1Vec) + abs(MILRad2Vec) + abs(MILRad3Vec);
+MILRadVec = [MILRad1Vec;MILRad2Vec;MILRad3Vec];
 
-Tr(1) = CRad1/MILSum(1);
-Tr(2) = CRad2/MILSum(2);
-Tr(3) = CRad3/MILSum(3);
+MILSum = norm(MILRad1Vec) + norm(MILRad2Vec) + norm(MILRad3Vec)
+
+% Tr(1) = CRad1/MILSum(1);
+% Tr(2) = CRad2/MILSum(2);
+% Tr(3) = CRad3/MILSum(3);
+
+% Tr(1) = CRad1/norm(MILRad1Vec);
+% Tr(2) = CRad2/norm(MILRad2Vec);
+% Tr(3) = CRad3/norm(MILRad3Vec);
+
+% Must match appropriate contact direction with oriented MIL direction
+% since MIL Values 1, 2, and 3 don't necessarily point in the 1, 2, and 3
+% directions.  The following loop figures out the orientation of each 
+% principal MIL value and matches it with the correct principal contact
+% value.
+for i=1:3
+    [~,Index] = max(MILRadVec(i,:));
+%     Tr(Index) = norm(MILRadVec(i,:))/CRad(Index)
+    Tr(Index) = CRad(Index)/norm(MILRadVec(i,:));
+end
+% Tr(1) = norm(MILRad1Vec)/CRad1;
+% Tr(2) = norm(MILRad2Vec)/CRad2;
+% Tr(3) = norm(MILRad3Vec)/CRad3;
