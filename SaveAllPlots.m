@@ -10,8 +10,11 @@ save(DataPath)
 
 for i = 1:length(hfigs)
     % Set figure size and position on screen
-    set(hfigs(i),'Units','inches')
-    set(hfigs(i),'Position',[3,3,6,3.5])
+    set(hfigs(i),'PaperUnits','inches')
+    set(hfigs(i),'PaperPosition',[3,3,6,3.5])
+    set(hfigs(i),'PaperPositionMode','manual')
+end
+for i = 1:length(hfigs)
     figure(hfigs(i))        %Bring figure to foreground
     filename = get(gcf,'name'); %Get window title for filename
     % If no special window title specified, give generic filename
@@ -22,6 +25,6 @@ for i = 1:length(hfigs)
     FilePath = fullfile(directory,filename);
     % Save figures to specified path
     saveas(hfigs(i),FilePath,'fig');
-    saveas(hfigs(i),FilePath,'emf');
-    saveas(hfigs(i),FilePath,'png');
+    print(hfigs(i),FilePath,'-dmeta');
+    print(hfigs(i),FilePath,'-dpng');
 end

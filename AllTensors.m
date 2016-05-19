@@ -1,4 +1,4 @@
-function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,Tr,F2,F2Ci,...
+function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,Tr,TrCi,MIL,MILCi,F2,F2Ci,...
     F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,coordNum,shapeFac]...
     = AllTensors(FileIn)
     
@@ -85,9 +85,9 @@ function [PixSize,VolFrac,D,E,MeanStrucThick,MeanStrucSep,idx,Tr,F2,F2Ci,...
 
 
 %% Import data from CTAnData (external function)
-[idx,PixSize,VolFrac,D,E,MeanStrucThick,StrucThickHist,...
+[idx,PixSize,VolFrac,D,LD,UD,E,MeanStrucThick,StrucThickHist,...
     MeanStrucSep,StrucSepHist,RootPath]...
-    = CTAnData(FileIn);
+    = CTAnData1(FileIn);
 %% Import data from Contact Tensor Segmentation Analysis
 [F2,F2Ci,F4,F4Ci,bondRad,grainRad,meanBondRad,meanGrainRad,...
     coordNum,shapeFac,idx,endtime,spatialLabel]...
@@ -128,9 +128,9 @@ for n = 1:length(idx)
 %     MILRad2(n) = D(2,n)/(VMIL(n)^(1/3));
 %     MILRad3(n) = D(3,n)/(VMIL(n)^(1/3));
     MILMatrix = D(:,n);
-    MILRad1(n) = D(1,n)/sum(MILMatrix)
-    MILRad2(n) = D(2,n)/sum(MILMatrix)
-    MILRad3(n) = D(3,n)/sum(MILMatrix)
+    MILRad1(n) = D(1,n)/sum(MILMatrix);
+    MILRad2(n) = D(2,n)/sum(MILMatrix);
+    MILRad3(n) = D(3,n)/sum(MILMatrix);
     
     [M1{n},M2{n},M3{n}]=ellipsoid(0,0,0,MILRad1(n),MILRad2(n),MILRad3(n),30);
     sz=size(M1{n});
@@ -154,7 +154,7 @@ for n = 1:length(idx)
     S2 = S2*rs;
     S3 = S3*rs;
     %% Calculate Aspect ratio of between the MIL and Contact Ellipsoids
-    Tr(:,n) = TensorRatio(F2(:,:,n),D(:,n),E(:,:,n));
+    [Tr(:,n),TrCi(:,n,:),MIL(:,:,n),MILCi(:,:,n,:)] = TensorRatio(F2(:,:,n),F2Ci(:,:,n,:),D(:,n),LD(:,n),UD(:,n),E(:,:,n));
     
     %% Calculate Mechanical Properties
     % Be sure to include outputs for the original contact tensor model, the
@@ -173,10 +173,14 @@ for n = 1:length(idx)
         PoissonAr(n), LPoissonAr(n), UPoissonAr(n),...
         PoissonArTr(n), LPoissonArTr(n), UPoissonArTr(n),...
         SRaw(:,:,n), SAr(:,:,n), SArTr(:,:,n)] = ...
-        MechModuli(VolFrac(n), coordNum(n), meanBondRad(n), meanGrainRad(n), F2(:,:,n), F2Ci(:,:,n,:), shapeFac(n) , Tr(:,n));
+        MechModuli(VolFrac(n), coordNum(n), meanBondRad(n), meanGrainRad(n),...
+        F2(:,:,n), F2Ci(:,:,n,:), shapeFac(n) , Tr(:,n), TrCi(:,n,:),...
+        MIL(:,:,n), MILCi(:,:,n,:));
     
 end
 % Plots
+TensorRatioPlot(idx,Tr,TrCi,endtime);
+MILTensorPlot(idx,MIL,MILCi,endtime);
 MILPlot(idx,C1,C2,C3,M1,M2,M3,S1,S2,S3,...
     StrucThickHist,MeanStrucThick,StrucSepHist,MeanStrucSep,...
     PixSize,spatialLabel,VolFrac,endtime);

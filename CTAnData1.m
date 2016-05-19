@@ -1,6 +1,6 @@
 function [idx,PixSize,VolFrac,EigVals,LEigVals,UEigVals,EigVecs,...
     MeanStrucThick,StrucThickHist,MeanStrucSep,StrucSepHist,RootPath]...
-    = CTAnData(FileIn)
+    = CTAnData1(FileIn)
 % CTAnData.m
 % function [idx,PixSize,VolFrac,EigVals,EigVecs,...
 %     MeanStrucThick,StrucThickHist,RootPath] = CTAnData(FileIn)
@@ -194,10 +194,10 @@ VolFrac = [dataArray{1:end-1}];
 % Initialize variables for EigVals.
 % startRow = 61;
 % endRow = 61;
-startRow = 44;  %Really row 28 but using previous data 17+44=61
-endRow = 44;    %Really row 28 but using previous data 17+44=61
-% startRow = 40;
-% endRow = 40;
+% startRow = 44;  %Really row 28 but using previous data 17+44=61
+% endRow = 44;    %Really row 28 but using previous data 17+44=61
+startRow = 40;
+endRow = 40;
 % Format string for each line of text:
 %   column3: double (%f)
 %	column4: double (%f)
@@ -232,7 +232,7 @@ EigVals = EigVals';
 %   column2: text (%s)
 %	column4: double (%f)
 % For more information, see the TEXTSCAN documentation.
-formatSpec = '%7f%11*s%7f%[^\n\r]';
+formatSpec = '%*2s%7f%11*s%7f%[^\n\r]';
 
 %% Read columns of data according to format string.
 % This call is based on the structure of the file used to generate this
@@ -260,15 +260,14 @@ end
 LEigVals = dataArray{:, 1};
 UEigVals = dataArray{:, 2};
 
-
 %% Import EigVecs
 % Initialize variables for EigVecs.
 % startRow = 91;
 % endRow = 93;
-startRow = 15;  %Really row 91 but using previous data 61+30=91
-endRow = 17;    %Really row 93 but using previous data 61+32=93
-% startRow = 29;
-% endRow = 31;
+% startRow = 30;  %Really row 91 but using previous data 61+30=91
+% endRow = 32;    %Really row 93 but using previous data 61+32=93
+startRow = 14;
+endRow = 16;
 % Format string for each line of text:
 %   column3: double (%f)
 %	column4: double (%f)

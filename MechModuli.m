@@ -9,7 +9,8 @@ function [EStarRaw, GStarRaw, nuStarRaw, EStarAr, GStarAr, nuStarAr,...
     PoissonAr, LPoissonAr, UPoissonAr,...
     PoissonArTr, LPoissonArTr, UPoissonArTr,...
     SRaw, SAr, SArTr] = ...
-    MechModuli(phii, N3, rho_hat, R_hat, C, Unc,Ar,Tr)
+    MechModuli(phii, N3, rho_hat, R_hat, C, Unc,Ar,Tr,TrCi,...
+        MIL, MILCi)
 % MechModuli.m
 % function [EStarRaw, GStarRaw, nuStarRaw, EStarAr, GStarAr, nuStarAr,...
 %     YoungsRaw, LYoungsRaw, UYoungsRaw,...
@@ -156,15 +157,18 @@ for i = 1:3
         if i == j % Diagonal values
             SRaw(i,j) = (1/EStarRaw) * (f/C(i,j,:))^2;
             SAr(i,j) = (1/EStarAr) * (f/C(i,j,:))^2;
-            SArTr(i,j) = (1/EStarAr) * (f/C(i,j,:))^2 * (1/Tr(i))^2;
+%             SArTr(i,j) = (1/EStarAr) * (f/C(i,j,:))^2 * (1/Tr(i))^2;
+            SArTr(i,j) = (1/EStarAr)  * (1/Tr(i))^2;
             
             LSRaw(i,j) = (1/EStarRaw) * (f/Unc(i,j,:,1))^2;  % Lower 95% CI
             LSAr(i,j) = (1/EStarAr) * (f/Unc(i,j,:,1))^2;
-            LSArTr(i,j) = (1/EStarAr) * (f/Unc(i,j,:,1))^2 * (1/Tr(i))^2;
+%             LSArTr(i,j) = (1/EStarAr) * (f/Unc(i,j,:,1))^2 * (1/Tr(i))^2;
+            LSArTr(i,j) = (1/EStarAr) * (1/TrCi(i,:,1))^2;
             
             USRaw(i,j) = (1/EStarRaw) * (f/Unc(i,j,:,2))^2;  % Upper 95% CI
             USAr(i,j) = (1/EStarAr) * (f/Unc(i,j,:,2))^2;
-            USArTr(i,j) = (1/EStarAr) * (f/Unc(i,j,:,2))^2 * (1/Tr(i))^2;
+%             USArTr(i,j) = (1/EStarAr) * (f/Unc(i,j,:,2))^2 * (1/Tr(i))^2;
+            USArTr(i,j) = (1/EStarAr) * (1/TrCi(i,:,2))^2;
             
             ERaw(i) = SRaw(i,j)^(-1);
             EAr(i) = SAr(i,j)^(-1);
@@ -180,15 +184,18 @@ for i = 1:3
         else
             SRaw(i,j) = (nuStarRaw/EStarRaw) * (f^2/(C(j,j,:)*C(i,i,:)));
             SAr(i,j) = (nuStarAr/EStarAr) * (f^2/(C(j,j,:)*C(i,i,:)));
-            SArTr(i,j) = (nuStarAr/EStarAr) * (f^2/(C(j,j,:)*C(i,i,:))) * (1/(Tr(i)*Tr(j)));
+%             SArTr(i,j) = (nuStarAr/EStarAr) * (f^2/(C(j,j,:)*C(i,i,:))) * (1/(Tr(i)*Tr(j)));
+            SArTr(i,j) = (nuStarAr/EStarAr) * (1/(Tr(i)*Tr(j)));
             
             LSRaw(i,j) = (nuStarRaw/EStarRaw) * (f^2/(Unc(j,j,:,1)*Unc(i,i,:,1)));
             LSAr(i,j) = (nuStarAr/EStarAr) * (f^2/(Unc(j,j,:,1)*Unc(i,i,:,1)));
-            LSArTr(i,j) = (nuStarAr/EStarAr) * (f^2/(Unc(j,j,:,1)*Unc(i,i,:,1))) * (1/(Tr(i)*Tr(j)));
+%             LSArTr(i,j) = (nuStarAr/EStarAr) * (f^2/(Unc(j,j,:,1)*Unc(i,i,:,1))) * (1/(Tr(i)*Tr(j)));
+            LSArTr(i,j) = (nuStarAr/EStarAr) * (1/(TrCi(i,:,1)*TrCi(j,:,1)));
             
             USRaw(i,j) = (nuStarRaw/EStarRaw) * (f^2/(Unc(j,j,:,2)*Unc(i,i,:,2)));
             USAr(i,j) = (nuStarAr/EStarAr) * (f^2/(Unc(j,j,:,2)*Unc(i,i,:,2)));
-            USArTr(i,j) = (nuStarAr/EStarAr) * (f^2/(Unc(j,j,:,2)*Unc(i,i,:,2))) * (1/(Tr(i)*Tr(j)));
+%             USArTr(i,j) = (nuStarAr/EStarAr) * (f^2/(Unc(j,j,:,2)*Unc(i,i,:,2))) * (1/(Tr(i)*Tr(j)));
+            USArTr(i,j) = (nuStarAr/EStarAr) * (1/(TrCi(i,:,2)*TrCi(j,:,2)));
             
             if j > i
                 k = k + 1;
@@ -215,9 +222,12 @@ SRaw(4,4) = (1/(2*GStarRaw)) * (f^2/(C(2,2,:)*C(3,3,:)));
 SAr(4,4) = (1/(2*GStarAr)) * (f^2/(C(2,2,:)*C(3,3,:)));
     LSAr(4,4) = (1/(2*GStarAr)) * (f^2/(Unc(2,2,:,1)*Unc(3,3,:,1)));
     USAr(4,4) = (1/(2*GStarAr)) * (f^2/(Unc(2,2,:,2)*Unc(3,3,:,2)));
-SArTr(4,4) = (1/(2*GStarAr)) * (f^2/(C(2,2,:)*C(3,3,:))) * (1/(Tr(2)*Tr(3)));
-    LSArTr(4,4) = (1/(2*GStarAr)) * (f^2/(Unc(2,2,:,1)*Unc(3,3,:,1))) * (1/(Tr(2)*Tr(3)));
-    USArTr(4,4) = (1/(2*GStarAr)) * (f^2/(Unc(2,2,:,2)*Unc(3,3,:,2))) * (1/(Tr(2)*Tr(3)));
+% SArTr(4,4) = (1/(2*GStarAr)) * (f^2/(C(2,2,:)*C(3,3,:))) * (1/(Tr(2)*Tr(3)));
+%     LSArTr(4,4) = (1/(2*GStarAr)) * (f^2/(Unc(2,2,:,1)*Unc(3,3,:,1))) * (1/(Tr(2)*Tr(3)));
+%     USArTr(4,4) = (1/(2*GStarAr)) * (f^2/(Unc(2,2,:,2)*Unc(3,3,:,2))) * (1/(Tr(2)*Tr(3)));
+SArTr(4,4) = (1/(2*GStarAr)) * (1/(Tr(2)*Tr(3)));
+    LSArTr(4,4) = (1/(2*GStarAr)) * (1/(TrCi(2,:,1)*TrCi(3,:,1)));
+    USArTr(4,4) = (1/(2*GStarAr)) * (1/(TrCi(2,:,2)*TrCi(3,:,2)));
     
 SRaw(5,5) = (1/(2*GStarRaw)) * (f^2/(C(1,1,:)*C(3,3,:)));
     LSRaw(5,5) = (1/(2*GStarRaw)) * (f^2/(Unc(1,1,:,1)*Unc(3,3,:,1)));
@@ -225,9 +235,12 @@ SRaw(5,5) = (1/(2*GStarRaw)) * (f^2/(C(1,1,:)*C(3,3,:)));
 SAr(5,5) = (1/(2*GStarAr)) * (f^2/(C(1,1,:)*C(3,3,:)));
     LSAr(5,5) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,1)*Unc(3,3,:,1)));
     USAr(5,5) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,2)*Unc(3,3,:,2)));
-SArTr(5,5) = (1/(2*GStarAr)) * (f^2/(C(1,1,:)*C(3,3,:))) * (1/(Tr(1)*Tr(3)));
-    LSArTr(5,5) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,1)*Unc(3,3,:,1))) * (1/(Tr(1)*Tr(3)));
-    USArTr(5,5) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,2)*Unc(3,3,:,2))) * (1/(Tr(1)*Tr(3)));
+% SArTr(5,5) = (1/(2*GStarAr)) * (f^2/(C(1,1,:)*C(3,3,:))) * (1/(Tr(1)*Tr(3)));
+%     LSArTr(5,5) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,1)*Unc(3,3,:,1))) * (1/(Tr(1)*Tr(3)));
+%     USArTr(5,5) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,2)*Unc(3,3,:,2))) * (1/(Tr(1)*Tr(3)));
+SArTr(5,5) = (1/(2*GStarAr)) * (1/(Tr(1)*Tr(3)));
+    LSArTr(5,5) = (1/(2*GStarAr)) * (1/(TrCi(1,:,1)*TrCi(3,:,1)));
+    USArTr(5,5) = (1/(2*GStarAr)) * (1/(TrCi(1,:,2)*TrCi(3,:,2)));
     
 SRaw(6,6) = (1/(2*GStarRaw)) * (f^2/(C(1,1,:)*C(2,2,:)));
     LSRaw(6,6) = (1/(2*GStarRaw)) * (f^2/(Unc(1,1,:,1)*Unc(2,2,:,1)));
@@ -235,9 +248,12 @@ SRaw(6,6) = (1/(2*GStarRaw)) * (f^2/(C(1,1,:)*C(2,2,:)));
 SAr(6,6) = (1/(2*GStarAr)) * (f^2/(C(1,1,:)*C(2,2,:)));
     LSAr(6,6) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,1)*Unc(2,2,:,1)));
     USAr(6,6) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,2)*Unc(2,2,:,2)));
-SArTr(6,6) = (1/(2*GStarAr)) * (f^2/(C(1,1,:)*C(2,2,:))) * (1/(Tr(1)*Tr(2)));
-    LSArTr(6,6) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,1)*Unc(2,2,:,1))) * (1/(Tr(1)*Tr(2)));
-    USArTr(6,6) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,2)*Unc(2,2,:,2))) * (1/(Tr(1)*Tr(2)));
+% SArTr(6,6) = (1/(2*GStarAr)) * (f^2/(C(1,1,:)*C(2,2,:))) * (1/(Tr(1)*Tr(2)));
+%     LSArTr(6,6) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,1)*Unc(2,2,:,1))) * (1/(Tr(1)*Tr(2)));
+%     USArTr(6,6) = (1/(2*GStarAr)) * (f^2/(Unc(1,1,:,2)*Unc(2,2,:,2))) * (1/(Tr(1)*Tr(2)));
+SArTr(6,6) = (1/(2*GStarAr)) * (1/(Tr(1)*Tr(2)));
+    LSArTr(6,6) = (1/(2*GStarAr)) * (1/(TrCi(1,:,1)*TrCi(2,:,1)));
+    USArTr(6,6) = (1/(2*GStarAr)) * (1/(TrCi(1,:,2)*TrCi(2,:,2)));
     
 % Raw Outputs
 YoungsRaw.x = ERaw(1);
