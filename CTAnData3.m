@@ -252,12 +252,12 @@ while 1                                     % infinite loop
                 % from the Import Tool.
                 %             textscan(fileID, '%[^\n\r]', 'ReturnOnError', false)
                 dataArray = textscan(tline, formatSpec, 'Delimiter', delimiter, 'ReturnOnError', false);
-                [EigVecs(i,:)] = [dataArray{1:end-1}]
+                [EigVecs(i,:)] = [dataArray{1:end-1}];
                 tline = fgetl(fileID);
                 counter = counter + 1;
                 
             end
-            EigVecs = EigVecs'
+            EigVecs = EigVecs';
             
             break
         end
@@ -331,8 +331,8 @@ end
 counter = endRow - 1;
 %% Get Mean Structure Seperation
 while 1                                     % infinite loop
-    tline = fgetl(fileID)                     % read a line
-    counter = counter + 1                  % we are one line further
+    tline = fgetl(fileID);                     % read a line
+    counter = counter + 1;                  % we are one line further
     if ischar(tline)                        % if the line is string
         U = strfind(tline, 'Structure separation,St.Sp,'); % where the string start (if at all)
         if isfinite(U) == 1;                % if it is a number actually
@@ -357,14 +357,14 @@ while 1                                     % infinite loop
     if ischar(tline)                        % if the line is string
         U = strfind(tline, 'Structure separation distribution,St.Sp'); % where the string start (if at all)
         if isfinite(U) == 1;                % if it is a number actually
-            startRow = counter+3
+            startRow = counter+3;
             continue
         end
     end
     if ischar(tline)                        % if the line is string
         U = strfind(tline, 'Standard deviation of structure separation'); % where the string start (if at all)
         if isfinite(U) == 1;                % if it is a number actually
-            endRow = counter-1
+            endRow = counter-1;
             
             % Format string for each line of text:
             %   column2: double (%f)
