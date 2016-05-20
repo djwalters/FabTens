@@ -528,9 +528,10 @@ if RootPath == 0
 else
     switch FileIn
         case 1
-            LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
-            [FileName,FilePath] = uigetfile([RootPath,'.csv'],'Select Segmentation Data');
-            FullPath = [FilePath,FileName];
+%             LocalPath = 'C:\Doctoral Research\Mechanical Testing\Radiation Recrystallization\Fabric Tensor and ANSYS\Matlab 3D Segmentation Results\';
+%             [FileName,FilePath] = uigetfile([RootPath,'.csv'],'Select Segmentation Data');
+            Files = dir(fullfile(RootPath,'*.csv'));
+            FullPath = fullfile(RootPath,Files.name);
 %             FullPath = [RootPath,'VertEllipses.csv'];
             % Read files of segmentation data
             fid = fopen(FullPath, 'r');  %Open read only
