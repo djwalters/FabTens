@@ -310,7 +310,7 @@ while 1                                     % infinite loop
             % This call is based on the structure of the file used to generate this
             % code. If an error occurs for a different file, try regenerating the code
             % from the Import Tool.
-            frewind(fileID)
+            frewind(fileID);
             textscan(fileID, '%[^\n\r]', startRow(1),'Delimiter','\n', 'ReturnOnError', false);
             dataArray = textscan(fileID, formatSpec, endRow(1)-startRow(1), 'Delimiter', delimiter, 'ReturnOnError', false);
             for block=2:length(startRow)
@@ -376,8 +376,8 @@ while 1                                     % infinite loop
             % This call is based on the structure of the file used to generate this
             % code. If an error occurs for a different file, try regenerating the code
             % from the Import Tool.
-            frewind(fileID)
-            textscan(fileID, '%[^\n\r]', startRow(1),'Delimiter','\n', 'ReturnOnError', false)
+            frewind(fileID);
+            textscan(fileID, '%[^\n\r]', startRow(1),'Delimiter','\n', 'ReturnOnError', false);
             dataArray = textscan(fileID, formatSpec, endRow(1)-startRow(1), 'Delimiter', delimiter, 'ReturnOnError', false);
             for block=2:length(startRow)
                 frewind(fileID);

@@ -128,9 +128,9 @@ for i=1:3
     LTr(Index) = LCRad(Index)/norm(LMILRadVec(i,:));
     UTr(Index) = UCRad(Index)/norm(UMILRadVec(i,:));
     
-    MIL(Index,:) = MILRadVec(i,:);
-    LMIL(Index,:) = LMILRadVec(i,:);
-    UMIL(Index,:) = UMILRadVec(i,:);
+    MIL(Index,:) = abs(MILRadVec(i,:));
+    LMIL(Index,:) = abs(LMILRadVec(i,:));
+    UMIL(Index,:) = abs(UMILRadVec(i,:));
     Index_prev(i+1) = Index;
 end
 
