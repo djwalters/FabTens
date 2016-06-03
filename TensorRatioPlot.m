@@ -84,12 +84,12 @@ errorbarwidth(hE,ebwidth);
 
 % Adjust format and appearance of contact tensor coefficient plot
 grid
-axis([-1 (endtime) 0.8 1.2])
+axis([-1 (endtime) 0.4 1.7])
 y1 = ylabel('Tenosr Ratio Diagonals (-)');
 x1 = xlabel('Elapsed Time (hrs)');
 set([y1 x1],'FontName',font,'FontSize',fsize)
 legend('\it{x}\rm{_1}','\it{x}\rm{_2}','\it{x}\rm{_3}',...
-    'Location','Northwest','Orientation','horizontal');
+    'Location','best','Orientation','horizontal');
 set(gca,'FontName',font,'FontSize',fsize,'XTick',0:3:endtime)
 
 % plot(idx,Tr(1,:),'rs','MarkerSize',msize);

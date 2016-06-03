@@ -124,15 +124,25 @@ for i=1:3
         end
     end
 %     Tr(Index) = norm(MILRadVec(i,:))/CRad(Index)
-    Tr(Index) = CRad(Index)/norm(MILRadVec(i,:));
-    LTr(Index) = LCRad(Index)/norm(LMILRadVec(i,:));
-    UTr(Index) = UCRad(Index)/norm(UMILRadVec(i,:));
+%     Tr(Index) = CRad(Index)/norm(MILRadVec(i,:));
+%     LTr(Index) = LCRad(Index)/norm(LMILRadVec(i,:));
+%     UTr(Index) = UCRad(Index)/norm(UMILRadVec(i,:));
     
     MIL(Index,:) = abs(MILRadVec(i,:));
     LMIL(Index,:) = abs(LMILRadVec(i,:));
     UMIL(Index,:) = abs(UMILRadVec(i,:));
     Index_prev(i+1) = Index;
 end
+MIL = MIL/trace(MIL);
+LMIL = LMIL/trace(MIL);
+UMIL = UMIL/trace(MIL);
+
+for i = 1:3
+    Tr(i) = CRad(i)/MIL(i,i);
+    LTr(i) = LCRad(i)/LMIL(i,i);
+    UTr(i) = UCRad(i)/UMIL(i,i);
+end   
+
 
 TrCi(:,:,1) = LTr;
 TrCi(:,:,2) = UTr;

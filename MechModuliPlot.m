@@ -189,7 +189,7 @@ plot(idx,EStarRaw./10^6,'k--')
 
 % Adjust format and appearance of Young's modulus plot
 legend('\it{E}\rm{_1}','\it{E}\rm{_2}','\it{E}\rm{_3}','\it{E*}',...
-    'Location','NorthEast');
+    'Location','best');
 grid, box on
 x1 = xlabel('Elapsed Time (hrs)');
 y1 = ylabel('Young''s Modulus (MPa)');
@@ -310,7 +310,7 @@ plot(idx,EStarAr./10^6,'k--')
 
 % Adjust format and appearance of Young's modulus plot
 legend('\it{E}\rm{_1}','\it{E}\rm{_2}','\it{E}\rm{_3}','\it{E*}',...
-    'Location','NorthEast');
+    'Location','best');
 grid, box on
 x1 = xlabel('Elapsed Time (hrs)');
 y1 = ylabel('Young''s Modulus (MPa)');
@@ -431,7 +431,7 @@ plot(idx,EStarAr./10^6,'k--')
 
 % Adjust format and appearance of Young's modulus plot
 legend('\it{E}\rm{_1}','\it{E}\rm{_2}','\it{E}\rm{_3}','\it{E*}',...
-    'Location','NorthEast');
+    'Location','best');
 grid, box on
 x1 = xlabel('Elapsed Time (hrs)');
 y1 = ylabel('Young''s Modulus (MPa)');
@@ -591,7 +591,7 @@ legend('\it{E}\rm{_1}\rm{^R^a^w}','\it{E}\rm{_2}\rm{^R^a^w}','\it{E}\rm{_3}\rm{^
     '\it{E}\rm{_1}\rm{^A^r}','\it{E}\rm{_2}\rm{^A^r}','\it{E}\rm{_3}\rm{^A^r}',...
     '\it{E*}\rm{^A^r}',...
     '\it{E}\rm{_1}\rm{^A^r^T^r}','\it{E}\rm{_2}\rm{^A^r^T^r}','\it{E}\rm{_3}\rm{^A^r^T^r}',...
-    'Location','NorthEast');
+    'Location','best');
 grid, box on
 x1 = xlabel('Elapsed Time (hrs)');
 y1 = ylabel('Young''s Modulus (MPa)');
@@ -666,7 +666,7 @@ legend('\it{G}\rm{_1_2}\rm{^R^a^w}','\it{G}\rm{_1_3}\rm{^R^a^w}','\it{G}\rm{_2_3
     '\it{G}\rm{_1_2}\rm{^A^r}','\it{G}\rm{_1_3}\rm{^A^r}','\it{G}\rm{_2_3}\rm{^A^r}',...
     '\it{G*}\rm{^A^r}',...
     '\it{G}\rm{_1_2}\rm{^A^r^T^r}','\it{G}\rm{_1_3}\rm{^A^r^T^r}','\it{G}\rm{_2_3}\rm{^A^r^T^r}',...
-    'Location','NorthEast');
+    'Location','best');
 
 grid, box on
 x1 = xlabel('Elapsed Time (hrs)');
